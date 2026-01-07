@@ -1,4 +1,64 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import hurriyaLogo from "@/assets/hurriya-logo.png";
+
+const ChainButton = () => {
+  const [isBreaking, setIsBreaking] = useState(false);
+  const [isBroken, setIsBroken] = useState(false);
+
+  const handleClick = () => {
+    if (isBroken) return;
+    setIsBreaking(true);
+    setTimeout(() => {
+      setIsBroken(true);
+      setIsBreaking(false);
+    }, 600);
+  };
+
+  return (
+    <button
+      onClick={handleClick}
+      className="group relative inline-flex items-center justify-center gap-3 overflow-hidden"
+    >
+      {/* Left Chain */}
+      <span
+        className={`font-mono text-2xl transition-all duration-500 ${
+          isBreaking ? "animate-chain-break-left" : ""
+        } ${isBroken ? "opacity-0 -translate-x-8" : ""}`}
+      >
+        ⛓️
+      </span>
+
+      {/* Button Core */}
+      <span
+        className={`relative px-8 py-4 font-display text-sm uppercase tracking-widest border-2 transition-all duration-300 ${
+          isBroken
+            ? "bg-primary text-primary-foreground border-primary"
+            : "bg-transparent text-foreground border-foreground hover:bg-foreground hover:text-background"
+        }`}
+      >
+        {isBroken ? "Unchained" : "Break Free"}
+        
+        {/* Spark effect on break */}
+        {isBreaking && (
+          <>
+            <span className="absolute -left-2 top-1/2 -translate-y-1/2 animate-spark-left text-yellow-400">✦</span>
+            <span className="absolute -right-2 top-1/2 -translate-y-1/2 animate-spark-right text-yellow-400">✦</span>
+          </>
+        )}
+      </span>
+
+      {/* Right Chain */}
+      <span
+        className={`font-mono text-2xl transition-all duration-500 ${
+          isBreaking ? "animate-chain-break-right" : ""
+        } ${isBroken ? "opacity-0 translate-x-8" : ""}`}
+      >
+        ⛓️
+      </span>
+    </button>
+  );
+};
 
 const MovementsSection = () => {
   return (
@@ -33,6 +93,15 @@ const MovementsSection = () => {
                 <div className="h-px flex-1 bg-border" />
               </div>
 
+              {/* Hurriya Logo */}
+              <div className="mb-6">
+                <img 
+                  src={hurriyaLogo} 
+                  alt="Hurriya" 
+                  className="h-20 md:h-24 w-auto"
+                />
+              </div>
+
               <h3 className="font-display text-4xl md:text-5xl font-bold mb-4 tracking-tight">
                 HURRIYA
               </h3>
@@ -48,9 +117,7 @@ const MovementsSection = () => {
             </div>
 
             <div className="relative z-10 mt-8">
-              <Button variant="brutal" size="lg">
-                Learn More
-              </Button>
+              <ChainButton />
             </div>
 
             {/* Corner Accent */}

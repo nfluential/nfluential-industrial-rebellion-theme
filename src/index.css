@@ -185,6 +185,83 @@
     animation: marquee 20s linear infinite;
   }
 
+  /* Chain Breaking Animations */
+  @keyframes chain-break-left {
+    0% {
+      transform: translateX(0) rotate(0deg);
+      opacity: 1;
+    }
+    50% {
+      transform: translateX(-10px) rotate(-20deg);
+      opacity: 1;
+    }
+    100% {
+      transform: translateX(-30px) rotate(-45deg);
+      opacity: 0;
+    }
+  }
+
+  @keyframes chain-break-right {
+    0% {
+      transform: translateX(0) rotate(0deg);
+      opacity: 1;
+    }
+    50% {
+      transform: translateX(10px) rotate(20deg);
+      opacity: 1;
+    }
+    100% {
+      transform: translateX(30px) rotate(45deg);
+      opacity: 0;
+    }
+  }
+
+  @keyframes spark-left {
+    0% {
+      transform: translateY(-50%) scale(0);
+      opacity: 0;
+    }
+    50% {
+      transform: translateY(-50%) scale(1.5);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(-50%) translateX(-20px) scale(0);
+      opacity: 0;
+    }
+  }
+
+  @keyframes spark-right {
+    0% {
+      transform: translateY(-50%) scale(0);
+      opacity: 0;
+    }
+    50% {
+      transform: translateY(-50%) scale(1.5);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(-50%) translateX(20px) scale(0);
+      opacity: 0;
+    }
+  }
+
+  .animate-chain-break-left {
+    animation: chain-break-left 0.6s ease-out forwards;
+  }
+
+  .animate-chain-break-right {
+    animation: chain-break-right 0.6s ease-out forwards;
+  }
+
+  .animate-spark-left {
+    animation: spark-left 0.5s ease-out forwards;
+  }
+
+  .animate-spark-right {
+    animation: spark-right 0.5s ease-out forwards;
+  }
+
   /* Parallax Effect Base */
   .parallax {
     transform-style: preserve-3d;
