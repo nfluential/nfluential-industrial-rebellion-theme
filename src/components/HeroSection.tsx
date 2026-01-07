@@ -24,9 +24,9 @@ const HeroSection = () => {
 
           {/* Main Headline */}
           <h1 className="font-display text-5xl md:text-7xl lg:text-8xl font-bold leading-none">
-            For The <span className="text-primary glow-crimson">Fearless</span>.
+            For The <span className="text-primary glow-eagles">Fearless</span>.
             <br />
-            The <span className="text-primary glow-crimson">Nfluential</span>.
+            The <span className="text-primary glow-eagles">Nfluential</span>.
           </h1>
 
           {/* Subheadline */}

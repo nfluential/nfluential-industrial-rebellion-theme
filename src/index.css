@@ -18,8 +18,8 @@
     --popover: 0 0% 6%;
     --popover-foreground: 0 0% 96%;
 
-    /* Primary - Electric Crimson (Distress Signal) */
-    --primary: 0 85% 50%;
+    /* Primary - Eagles Midnight Green */
+    --primary: 165 100% 24%;
     --primary-foreground: 0 0% 100%;
 
     /* Secondary - Concrete Gray */
@@ -39,24 +39,24 @@
 
     --border: 0 0% 16%;
     --input: 0 0% 16%;
-    --ring: 0 85% 50%;
+    --ring: 165 100% 24%;
 
     --radius: 0rem;
 
     /* Custom Brand Tokens */
-    --glow-crimson: 0 85% 50%;
+    --glow-eagles: 165 100% 24%;
     --glow-neon: 120 100% 50%;
     --concrete: 0 0% 25%;
     --steel: 0 0% 40%;
 
     --sidebar-background: 0 0% 6%;
     --sidebar-foreground: 0 0% 96%;
-    --sidebar-primary: 0 85% 50%;
+    --sidebar-primary: 165 100% 24%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 0 0% 12%;
     --sidebar-accent-foreground: 0 0% 96%;
     --sidebar-border: 0 0% 16%;
-    --sidebar-ring: 0 85% 50%;
+    --sidebar-ring: 165 100% 24%;
   }
 
   .dark {
@@ -66,7 +66,7 @@
     --card-foreground: 0 0% 96%;
     --popover: 0 0% 6%;
     --popover-foreground: 0 0% 96%;
-    --primary: 0 85% 50%;
+    --primary: 165 100% 24%;
     --primary-foreground: 0 0% 100%;
     --secondary: 0 0% 18%;
     --secondary-foreground: 0 0% 96%;
@@ -78,15 +78,15 @@
     --destructive-foreground: 210 40% 98%;
     --border: 0 0% 16%;
     --input: 0 0% 16%;
-    --ring: 0 85% 50%;
+    --ring: 165 100% 24%;
     --sidebar-background: 0 0% 6%;
     --sidebar-foreground: 0 0% 96%;
-    --sidebar-primary: 0 85% 50%;
+    --sidebar-primary: 165 100% 24%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 0 0% 12%;
     --sidebar-accent-foreground: 0 0% 96%;
     --sidebar-border: 0 0% 16%;
-    --sidebar-ring: 0 85% 50%;
+    --sidebar-ring: 165 100% 24%;
   }
 }
 
@@ -122,10 +122,10 @@
   }
 
   /* Glow Effects */
-  .glow-crimson {
-    text-shadow: 0 0 20px hsl(var(--glow-crimson) / 0.6),
-                 0 0 40px hsl(var(--glow-crimson) / 0.4),
-                 0 0 60px hsl(var(--glow-crimson) / 0.2);
+  .glow-eagles {
+    text-shadow: 0 0 20px hsl(var(--glow-eagles) / 0.6),
+                 0 0 40px hsl(var(--glow-eagles) / 0.4),
+                 0 0 60px hsl(var(--glow-eagles) / 0.2);
   }
 
   .glow-neon {
