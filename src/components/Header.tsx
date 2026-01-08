@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Menu, X, ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import logo from "@/assets/nfluential-logo.png";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -9,16 +8,18 @@ const Header = () => {
   const navItems = [
     { label: "Shop", href: "/#shop" },
     { label: "Library", href: "/#library" },
-    { label: "Movements", href: "/#movements" },
-    { label: "About", href: "/about" },
+    { label: "About", href: "/#about" },
+    { label: "Brands & Friends", href: "/#brands" },
   ];
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-md border-b border-border">
       <div className="container flex items-center justify-between h-16 md:h-20">
-        {/* Logo */}
-        <a href="#" className="flex items-center gap-2">
-          <img src={logo} alt="Nfluential" className="h-10 md:h-12 w-auto" />
+        {/* Logo Text with Pulsating Glow */}
+        <a href="/" className="flex items-center">
+          <span className="font-display text-xl md:text-2xl font-bold tracking-tight text-primary animate-glow-pulse">
+            Nfluential™
+          </span>
         </a>
 
         {/* Desktop Nav */}
