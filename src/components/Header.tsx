@@ -18,7 +18,7 @@ const Header = () => {
         {/* Logo Text with Pulsating Glow */}
         <a href="/" className="flex items-center">
           <span className="font-display text-xl md:text-2xl font-bold tracking-tight text-primary animate-glow-pulse">
-            Nfluential™
+            Nfluential
           </span>
         </a>
 
