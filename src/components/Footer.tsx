@@ -65,7 +65,7 @@ const Footer = () => {
         {/* Bottom Bar */}
         <div className="border-t border-border mt-12 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="font-mono text-xs text-muted-foreground">
-            © 2024 Nfluential. All rights reserved.
+            © 2026 Nfluential. All rights reserved.
           </p>
           <div className="flex items-center gap-6">
             <a href="#" className="font-mono text-xs text-muted-foreground hover:text-primary transition-colors">
