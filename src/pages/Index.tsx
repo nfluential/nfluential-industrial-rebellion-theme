@@ -5,8 +5,8 @@ import ShopSection from "@/components/ShopSection";
 import LibrarySection from "@/components/LibrarySection";
 import BrandsFriendsSection from "@/components/BrandsFriendsSection";
 import ManifestoSection from "@/components/ManifestoSection";
+import NewsletterSection from "@/components/NewsletterSection";
 import Footer from "@/components/Footer";
-import StickyFooter from "@/components/StickyFooter";
 
 const Index = () => {
   return (
@@ -19,9 +19,9 @@ const Index = () => {
         <LibrarySection />
         <BrandsFriendsSection />
         <ManifestoSection />
+        <NewsletterSection />
       </main>
       <Footer />
-      <StickyFooter />
     </div>
   );
 };
