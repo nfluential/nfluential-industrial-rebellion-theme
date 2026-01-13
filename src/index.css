@@ -302,4 +302,68 @@
     -webkit-background-clip: text;
     background-clip: text;
   }
+
+  /* Fog Effect Layers */
+  .fog-layer-1 {
+    background: linear-gradient(
+      to top,
+      hsl(var(--muted) / 0.8) 0%,
+      hsl(var(--muted) / 0.4) 30%,
+      transparent 70%
+    );
+    animation: fog-drift-1 8s ease-in-out infinite;
+  }
+
+  .fog-layer-2 {
+    background: radial-gradient(
+      ellipse at 50% 100%,
+      hsl(var(--background) / 0.9) 0%,
+      hsl(var(--muted) / 0.5) 40%,
+      transparent 70%
+    );
+    animation: fog-drift-2 12s ease-in-out infinite;
+  }
+
+  .fog-layer-3 {
+    background: linear-gradient(
+      180deg,
+      transparent 0%,
+      hsl(var(--muted) / 0.3) 50%,
+      hsl(var(--background) / 0.8) 100%
+    );
+    animation: fog-drift-3 6s ease-in-out infinite;
+  }
+
+  @keyframes fog-drift-1 {
+    0%, 100% {
+      transform: translateY(0) scale(1);
+      opacity: 0.7;
+    }
+    50% {
+      transform: translateY(-5%) scale(1.05);
+      opacity: 0.5;
+    }
+  }
+
+  @keyframes fog-drift-2 {
+    0%, 100% {
+      transform: translateX(-2%) translateY(0);
+      opacity: 0.5;
+    }
+    50% {
+      transform: translateX(2%) translateY(-3%);
+      opacity: 0.3;
+    }
+  }
+
+  @keyframes fog-drift-3 {
+    0%, 100% {
+      transform: translateY(0);
+      opacity: 0.6;
+    }
+    50% {
+      transform: translateY(3%);
+      opacity: 0.4;
+    }
+  }
 }
