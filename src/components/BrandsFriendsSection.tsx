@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import ScrollAnimationWrapper from "@/components/ScrollAnimationWrapper";
 import hurriyaLogo from "@/assets/hurriya-logo.png";
 
 const ChainButton = ({ href }: { href: string }) => {
@@ -180,54 +181,62 @@ const BrandsFriendsSection = () => {
     <section id="brands" className="py-20 md:py-32 bg-background">
       <div className="container">
         {/* Section Header */}
-        <div className="text-center mb-16 space-y-4">
+        <ScrollAnimationWrapper animation="fade-up" className="text-center mb-16 space-y-4">
           <span className="font-mono text-xs tracking-[0.3em] text-muted-foreground uppercase">
             [003] The Network
           </span>
           <h2 className="font-display text-4xl md:text-6xl font-bold">
             Brands & Friends That's <span className="text-primary">Nfluential</span>
           </h2>
-        </div>
+        </ScrollAnimationWrapper>
 
         {/* Brand Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Hurriya */}
-          <BrandCard
-            name="HURRIYA"
-            subtitle="[UNCENSORED] Freedom for the Incarcerated"
-            description="Breaking chains, building futures. Hurriya stands for those who society wants to forget. No limits. No silence. No surrender."
-            url="https://www.hurriya.us"
-            variant="hurriya"
-            logo={hurriyaLogo}
-          />
+          <ScrollAnimationWrapper animation="fade-right" delay={0}>
+            <BrandCard
+              name="HURRIYA"
+              subtitle="[UNCENSORED] Freedom for the Incarcerated"
+              description="Breaking chains, building futures. Hurriya stands for those who society wants to forget. No limits. No silence. No surrender."
+              url="https://www.hurriya.us"
+              variant="hurriya"
+              logo={hurriyaLogo}
+            />
+          </ScrollAnimationWrapper>
 
           {/* Illegal Alien */}
-          <BrandCard
-            name="ILLEGAL ALIEN"
-            subtitle="Free Thinking • Global Citizen"
-            description="We are from everywhere and nowhere. Borders don't define us. Our minds roam free across galaxies while our feet stay grounded in truth."
-            url="#"
-            variant="alien"
-          />
+          <ScrollAnimationWrapper animation="fade-left" delay={100}>
+            <BrandCard
+              name="ILLEGAL ALIEN"
+              subtitle="Free Thinking • Global Citizen"
+              description="We are from everywhere and nowhere. Borders don't define us. Our minds roam free across galaxies while our feet stay grounded in truth."
+              url="#"
+              variant="alien"
+            />
+          </ScrollAnimationWrapper>
 
           {/* Asad Carter */}
-          <BrandCard
-            name="ASAD CARTER"
-            subtitle="The Self Proclaimed Literary King of Comedy"
-            description="Author of the hilarious trio; Robert, Chuck, and Fletcher in: 'Maaan, I'm Still Tha Sh*t!' and let's not forget the crew from 'Maaan, Crackheads Can't Quit Tha Fix!', and more!"
-            url="https://www.asadcarter.com"
-            variant="default"
-          />
+          <ScrollAnimationWrapper animation="fade-right" delay={200}>
+            <BrandCard
+              name="ASAD CARTER"
+              subtitle="The Self Proclaimed Literary King of Comedy"
+              description="Author of the hilarious trio; Robert, Chuck, and Fletcher in: 'Maaan, I'm Still Tha Sh*t!' and let's not forget the crew from 'Maaan, Crackheads Can't Quit Tha Fix!', and more!"
+              url="https://www.asadcarter.com"
+              variant="default"
+            />
+          </ScrollAnimationWrapper>
 
           {/* Zi */}
-          <BrandCard
-            name="ᙇ | Zi"
-            subtitle="Advanced Alien Intelligence Systems"
-            description="Zi is a mysterious life force from the future that utilizes advanced alien intelligence systems from an unknown galaxy to bring the technology of tomorrow, today. You'll find its work throughout the Zi Grid."
-            url="https://by.zi.gr"
-            variant="zi"
-            symbol="ᙇ"
-          />
+          <ScrollAnimationWrapper animation="fade-left" delay={300}>
+            <BrandCard
+              name="ᙇ | Zi"
+              subtitle="Advanced Alien Intelligence Systems"
+              description="Zi is a mysterious life force from the future that utilizes advanced alien intelligence systems from an unknown galaxy to bring the technology of tomorrow, today. You'll find its work throughout the Zi Grid."
+              url="https://by.zi.gr"
+              variant="zi"
+              symbol="ᙇ"
+            />
+          </ScrollAnimationWrapper>
         </div>
       </div>
     </section>

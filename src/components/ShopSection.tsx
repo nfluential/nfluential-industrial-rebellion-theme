@@ -1,4 +1,5 @@
 import ProductCard from "@/components/ProductCard";
+import ScrollAnimationWrapper from "@/components/ScrollAnimationWrapper";
 import hoodieImg from "@/assets/product-hoodie.jpg";
 import croptopImg from "@/assets/product-croptop.jpg";
 import sweatsImg from "@/assets/product-sweats.jpg";
@@ -53,7 +54,7 @@ const ShopSection = () => {
     <section id="shop" className="py-20 md:py-32 bg-background">
       <div className="container">
         {/* Section Header */}
-        <div className="text-center mb-16 space-y-4">
+        <ScrollAnimationWrapper animation="fade-up" className="text-center mb-16 space-y-4">
           <span className="font-mono text-xs tracking-[0.3em] text-muted-foreground uppercase">
             [001] Collection
           </span>
@@ -63,34 +64,33 @@ const ShopSection = () => {
           <p className="font-mono text-sm text-muted-foreground max-w-md mx-auto">
             Premium streetwear for those who move in silence but speak through presence.
           </p>
-        </div>
+        </ScrollAnimationWrapper>
 
         {/* Product Grid - Masonry Style */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
           {products.map((product, index) => (
-            <div
+            <ScrollAnimationWrapper
               key={product.id}
+              animation="slide-up"
+              delay={index * 100}
               className={`${
                 index === 0 || index === 4 ? "sm:row-span-1" : ""
               }`}
-              style={{ 
-                animationDelay: `${index * 100}ms`,
-              }}
             >
               <ProductCard {...product} />
-            </div>
+            </ScrollAnimationWrapper>
           ))}
         </div>
 
         {/* View All CTA */}
-        <div className="text-center mt-12">
+        <ScrollAnimationWrapper animation="fade-up" delay={700} className="text-center mt-12">
           <a
             href="#"
             className="font-mono text-sm uppercase tracking-widest text-muted-foreground hover:text-primary transition-colors border-b border-muted-foreground hover:border-primary pb-1"
           >
             View All Products →
           </a>
-        </div>
+        </ScrollAnimationWrapper>
       </div>
     </section>
   );
