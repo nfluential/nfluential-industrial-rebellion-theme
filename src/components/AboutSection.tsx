@@ -1,5 +1,4 @@
 import heroImage from "@/assets/about-hero.jpg";
-import ScrollAnimationWrapper from "@/components/ScrollAnimationWrapper";
 
 const AboutSection = () => {
   return (
@@ -18,11 +17,9 @@ const AboutSection = () => {
 
         {/* Hero Content */}
         <div className="relative z-10 container text-center">
-          <ScrollAnimationWrapper animation="glitch">
-            <h2 className="font-display text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight">
-              THE <span className="text-primary glow-eagles">NFLUENTIAL</span> CODE.
-            </h2>
-          </ScrollAnimationWrapper>
+          <h2 className="font-display text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight">
+            THE <span className="text-primary glow-eagles">NFLUENTIAL</span> CODE.
+          </h2>
         </div>
 
         {/* Noise Overlay */}
@@ -34,7 +31,7 @@ const AboutSection = () => {
         <div className="container max-w-4xl">
           
           {/* Intro */}
-          <ScrollAnimationWrapper animation="fade-up" className="mb-16 md:mb-24 text-center">
+          <div className="mb-16 md:mb-24 text-center">
             <p className="font-mono text-lg md:text-xl text-muted-foreground leading-relaxed">
               Everybody asks the same question: <span className="text-foreground font-bold">"What is Nfluential?"</span>
             </p>
@@ -46,74 +43,68 @@ const AboutSection = () => {
             <p className="font-mono text-lg md:text-xl text-foreground font-bold mt-6">
               We don't define Nfluential. You do, by how you move when things get tough.
             </p>
-          </ScrollAnimationWrapper>
+          </div>
 
           {/* The Hunger & The Hubris */}
-          <ScrollAnimationWrapper animation="fade-right" className="mb-16 md:mb-24">
-            <div className="border-l-4 border-primary pl-8 md:pl-12">
-              <h3 className="font-display text-3xl md:text-4xl font-bold mb-6 tracking-tight">
-                THE HUNGER & THE HUBRIS
-              </h3>
-              <div className="space-y-6">
-                <p className="font-mono text-base md:text-lg text-muted-foreground leading-relaxed">
-                  Nfluential is the fuel for anyone aspiring to be more. It's that drive that refuses to lay down. 
-                  It is absolute confidence—the kind of unshakeable belief that the sidelines mistake for arrogance 
-                  because they don't understand the vision.
-                </p>
-                <p className="font-mono text-base md:text-lg text-muted-foreground leading-relaxed">
-                  It's never apologizing for being authentically you, because being you is what causes the shift in the room. 
-                  It's leadership when nobody else wants to step up.
-                </p>
-              </div>
+          <div className="mb-16 md:mb-24 border-l-4 border-primary pl-8 md:pl-12">
+            <h3 className="font-display text-3xl md:text-4xl font-bold mb-6 tracking-tight">
+              THE HUNGER & THE HUBRIS
+            </h3>
+            <div className="space-y-6">
+              <p className="font-mono text-base md:text-lg text-muted-foreground leading-relaxed">
+                Nfluential is the fuel for anyone aspiring to be more. It's that drive that refuses to lay down. 
+                It is absolute confidence—the kind of unshakeable belief that the sidelines mistake for arrogance 
+                because they don't understand the vision.
+              </p>
+              <p className="font-mono text-base md:text-lg text-muted-foreground leading-relaxed">
+                It's never apologizing for being authentically you, because being you is what causes the shift in the room. 
+                It's leadership when nobody else wants to step up.
+              </p>
             </div>
-          </ScrollAnimationWrapper>
+          </div>
 
           {/* The Underdog Mentality */}
-          <ScrollAnimationWrapper animation="fade-left" className="mb-16 md:mb-24">
-            <div className="border-l-4 border-accent pl-8 md:pl-12">
-              <h3 className="font-display text-3xl md:text-4xl font-bold mb-6 tracking-tight">
-                THE UNDERDOG MENTALITY
-              </h3>
-              <div className="space-y-6">
-                <p className="font-mono text-base md:text-lg text-muted-foreground leading-relaxed">
-                  Nfluential is that feeling in your gut. The one you get when the odds are stacked a mile high against you, 
-                  but you still know you're walking out with the W.
-                </p>
-                <p className="font-mono text-base md:text-lg text-muted-foreground leading-relaxed">
-                  It's the self-motivation to keep swinging when the world counts you out like Rocky. 
-                  <span className="text-foreground italic"> (And we're talking prime, hungry Rocky—not the one who got his ass whooped later on)</span>. 
-                  It's digging deep when your body is screaming that you have zero gas left in the tank, 
-                  and finding that extra mile anyway.
-                </p>
-              </div>
+          <div className="mb-16 md:mb-24 border-l-4 border-accent pl-8 md:pl-12">
+            <h3 className="font-display text-3xl md:text-4xl font-bold mb-6 tracking-tight">
+              THE UNDERDOG MENTALITY
+            </h3>
+            <div className="space-y-6">
+              <p className="font-mono text-base md:text-lg text-muted-foreground leading-relaxed">
+                Nfluential is that feeling in your gut. The one you get when the odds are stacked a mile high against you, 
+                but you still know you're walking out with the W.
+              </p>
+              <p className="font-mono text-base md:text-lg text-muted-foreground leading-relaxed">
+                It's the self-motivation to keep swinging when the world counts you out like Rocky. 
+                <span className="text-foreground italic"> (And we're talking prime, hungry Rocky—not the one who got his ass whooped later on)</span>. 
+                It's digging deep when your body is screaming that you have zero gas left in the tank, 
+                and finding that extra mile anyway.
+              </p>
             </div>
-          </ScrollAnimationWrapper>
+          </div>
 
           {/* The Obligation */}
-          <ScrollAnimationWrapper animation="fade-right" className="mb-16 md:mb-24">
-            <div className="border-l-4 border-foreground pl-8 md:pl-12">
-              <h3 className="font-display text-3xl md:text-4xl font-bold mb-6 tracking-tight">
-                THE OBLIGATION
-              </h3>
-              <div className="space-y-6">
-                <p className="font-mono text-base md:text-lg text-muted-foreground leading-relaxed">
-                  Most importantly, Nfluential is what you embody to pass on to the next person in the struggle. 
-                  We don't gatekeep success here. <span className="text-primary font-bold">You climb, and you reach back.</span> 
-                  Never leave a striving person behind.
-                </p>
-                <p className="font-mono text-base md:text-lg text-foreground leading-relaxed">
-                  That's what it is. Now the real question is…
-                </p>
-              </div>
+          <div className="mb-16 md:mb-24 border-l-4 border-foreground pl-8 md:pl-12">
+            <h3 className="font-display text-3xl md:text-4xl font-bold mb-6 tracking-tight">
+              THE OBLIGATION
+            </h3>
+            <div className="space-y-6">
+              <p className="font-mono text-base md:text-lg text-muted-foreground leading-relaxed">
+                Most importantly, Nfluential is what you embody to pass on to the next person in the struggle. 
+                We don't gatekeep success here. <span className="text-primary font-bold">You climb, and you reach back.</span> 
+                Never leave a striving person behind.
+              </p>
+              <p className="font-mono text-base md:text-lg text-foreground leading-relaxed">
+                That's what it is. Now the real question is…
+              </p>
             </div>
-          </ScrollAnimationWrapper>
+          </div>
 
           {/* Call to Action */}
-          <ScrollAnimationWrapper animation="scale-up" className="text-center py-12 md:py-16 border-t border-b border-border">
+          <div className="text-center py-12 md:py-16 border-t border-b border-border">
             <h3 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-primary glow-eagles">
               ARE YOU NFLUENTIAL?
             </h3>
-          </ScrollAnimationWrapper>
+          </div>
 
         </div>
       </div>

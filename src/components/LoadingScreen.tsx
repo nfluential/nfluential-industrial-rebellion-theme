@@ -7,39 +7,15 @@ interface LoadingScreenProps {
 
 const LoadingScreen = ({ onLoadComplete, minDuration = 2500 }: LoadingScreenProps) => {
   const [fadeOut, setFadeOut] = useState(false);
-  const [isPageLoaded, setIsPageLoaded] = useState(false);
-  const [minTimeElapsed, setMinTimeElapsed] = useState(false);
 
-  // Check when page is fully loaded
-  useEffect(() => {
-    const handleLoad = () => setIsPageLoaded(true);
-    
-    // Check if already loaded
-    if (document.readyState === "complete") {
-      setIsPageLoaded(true);
-    } else {
-      window.addEventListener("load", handleLoad);
-    }
-
-    return () => window.removeEventListener("load", handleLoad);
-  }, []);
-
-  // Minimum duration timer
   useEffect(() => {
     const timer = setTimeout(() => {
-      setMinTimeElapsed(true);
+      setFadeOut(true);
+      setTimeout(onLoadComplete, 1000);
     }, minDuration);
 
     return () => clearTimeout(timer);
-  }, [minDuration]);
-
-  // Fade out when both conditions are met
-  useEffect(() => {
-    if (isPageLoaded && minTimeElapsed) {
-      setFadeOut(true);
-      setTimeout(onLoadComplete, 1000);
-    }
-  }, [isPageLoaded, minTimeElapsed, onLoadComplete]);
+  }, [onLoadComplete, minDuration]);
 
   return (
     <div

@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
 import heroImage from "@/assets/hero-cityscape.jpg";
-import ScrollAnimationWrapper from "@/components/ScrollAnimationWrapper";
 
 const HeroSection = () => {
   return (
@@ -17,42 +16,34 @@ const HeroSection = () => {
 
       {/* Content */}
       <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-4">
-        <div className="space-y-6 max-w-4xl">
+        <div className="space-y-6 max-w-4xl animate-fade-in-up">
           {/* Eyebrow */}
-          <ScrollAnimationWrapper animation="fade-down" delay={200}>
-            <p className="font-mono text-xs md:text-sm tracking-[0.3em] text-muted-foreground uppercase">
-              Urban Streetwear × Literature
-            </p>
-          </ScrollAnimationWrapper>
+          <p className="font-mono text-xs md:text-sm tracking-[0.3em] text-muted-foreground uppercase">
+            Urban Streetwear × Literature
+          </p>
 
           {/* Main Headline */}
-          <ScrollAnimationWrapper animation="scale-up" delay={400}>
-            <h1 className="font-display text-5xl md:text-7xl lg:text-8xl font-bold leading-none">
-              For The <span className="text-primary glow-eagles">Fearless</span>.
-              <br />
-              The <span className="text-primary glow-eagles">Nfluential</span>.
-            </h1>
-          </ScrollAnimationWrapper>
+          <h1 className="font-display text-5xl md:text-7xl lg:text-8xl font-bold leading-none">
+            For The <span className="text-primary glow-eagles">Fearless</span>.
+            <br />
+            The <span className="text-primary glow-eagles">Nfluential</span>.
+          </h1>
 
           {/* Subheadline */}
-          <ScrollAnimationWrapper animation="blur-in" delay={600}>
-            <p className="font-mono text-sm md:text-base text-muted-foreground max-w-xl mx-auto leading-relaxed">
-              We build empires from nothing. We ignore the doubters. 
-              We look failure in the eyes and keep moving.
-            </p>
-          </ScrollAnimationWrapper>
+          <p className="font-mono text-sm md:text-base text-muted-foreground max-w-xl mx-auto leading-relaxed">
+            We build empires from nothing. We ignore the doubters. 
+            We look failure in the eyes and keep moving.
+          </p>
 
           {/* CTAs */}
-          <ScrollAnimationWrapper animation="fade-up" delay={800}>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-              <Button variant="hero" size="lg">
-                Shop the Collection
-              </Button>
-              <Button variant="outline" size="lg">
-                Explore the Library
-              </Button>
-            </div>
-          </ScrollAnimationWrapper>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+            <Button variant="hero" size="lg">
+              Shop the Collection
+            </Button>
+            <Button variant="outline" size="lg">
+              Explore the Library
+            </Button>
+          </div>
         </div>
 
         {/* Scroll Indicator */}
