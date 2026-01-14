@@ -2,10 +2,12 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Mail, Sparkles, Tag, Bell } from "lucide-react";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
 const NewsletterSection = () => {
   const [email, setEmail] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const { ref: sectionRef, isVisible } = useScrollAnimation();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,7 +26,10 @@ const NewsletterSection = () => {
   return (
     <section className="py-20 md:py-32 bg-muted/30">
       <div className="container">
-        <div className="max-w-2xl mx-auto text-center">
+        <div 
+          ref={sectionRef}
+          className={`max-w-2xl mx-auto text-center ${isVisible ? 'animate-blur-in' : 'scroll-hidden'}`}
+        >
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-6">
             <Mail className="w-8 h-8 text-primary" />
           </div>

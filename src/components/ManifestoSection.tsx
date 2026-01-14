@@ -1,5 +1,8 @@
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+
 const ManifestoSection = () => {
   const manifestoText = "WE IGNORED THE DOUBTERS • WE LOOKED FAILURE IN THE EYES • WE ARE THE NFLUENTIAL • WE BUILD EMPIRES FROM NOTHING • ";
+  const { ref: contentRef, isVisible } = useScrollAnimation();
   
   return (
     <section id="manifesto" className="py-12 md:py-20 bg-primary overflow-hidden">
@@ -20,7 +23,10 @@ const ManifestoSection = () => {
 
       {/* Static Manifesto Content */}
       <div className="container mt-16 md:mt-24">
-        <div className="max-w-3xl mx-auto text-center space-y-8">
+        <div 
+          ref={contentRef}
+          className={`max-w-3xl mx-auto text-center space-y-8 ${isVisible ? 'animate-scale-in' : 'scroll-hidden'}`}
+        >
           <h2 className="font-display text-3xl md:text-5xl font-bold text-primary-foreground leading-tight">
             This is Not Just a Brand.<br />
             This is a <span className="underline decoration-4 underline-offset-8">Movement</span>.
