@@ -2,6 +2,7 @@ import ProductCard from "@/components/ProductCard";
 import hoodieImg from "@/assets/product-hoodie.jpg";
 import croptopImg from "@/assets/product-croptop.jpg";
 import sweatsImg from "@/assets/product-sweats.jpg";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
 const products = [
   {
@@ -49,11 +50,17 @@ const products = [
 ];
 
 const ShopSection = () => {
+  const { ref: headerRef, isVisible: headerVisible } = useScrollAnimation();
+  const { ref: gridRef, isVisible: gridVisible } = useScrollAnimation({ threshold: 0.05 });
+
   return (
     <section id="shop" className="py-20 md:py-32 bg-background">
       <div className="container">
         {/* Section Header */}
-        <div className="text-center mb-16 space-y-4">
+        <div 
+          ref={headerRef}
+          className={`text-center mb-16 space-y-4 ${headerVisible ? 'animate-slide-up' : 'scroll-hidden'}`}
+        >
           <span className="font-mono text-xs tracking-[0.3em] text-muted-foreground uppercase">
             [001] Collection
           </span>
@@ -66,13 +73,16 @@ const ShopSection = () => {
         </div>
 
         {/* Product Grid - Masonry Style */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+        <div 
+          ref={gridRef}
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
+        >
           {products.map((product, index) => (
             <div
               key={product.id}
               className={`${
                 index === 0 || index === 4 ? "sm:row-span-1" : ""
-              }`}
+              } ${gridVisible ? 'animate-scale-in' : 'scroll-hidden'}`}
               style={{ 
                 animationDelay: `${index * 100}ms`,
               }}

@@ -1,4 +1,4 @@
-import { ArrowUp } from "lucide-react";
+import { Rocket } from "lucide-react";
 import logo from "@/assets/nfluential-logo.png";
 
 const Footer = () => {
@@ -92,8 +92,20 @@ const Footer = () => {
         className="absolute right-6 -top-6 w-12 h-12 bg-primary hover:bg-primary/80 text-primary-foreground rounded-none flex items-center justify-center transition-all duration-300 hover:scale-110 shadow-brutal group"
         aria-label="Teleport to top"
       >
-        <ArrowUp className="w-5 h-5 group-hover:animate-bounce" />
+        <Rocket className="w-5 h-5 group-hover:animate-bounce transform -rotate-45" />
       </button>
+
+      {/* Zi Link - Bottom Right */}
+      <a
+        href="https://zi.gr"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="absolute right-6 bottom-6 text-3xl font-bold animate-pulse-glow hover:scale-110 transition-transform"
+        style={{ color: "hsl(var(--accent))" }}
+        aria-label="Visit Zi"
+      >
+        ᙇ
+      </a>
     </footer>
   );
 };

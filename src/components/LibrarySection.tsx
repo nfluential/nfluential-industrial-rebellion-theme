@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import bookCover1 from "@/assets/book-cover-1.jpg";
 import bookCover2 from "@/assets/book-cover-2.jpg";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
 const books = [
   {
@@ -20,6 +21,9 @@ const books = [
 ];
 
 const LibrarySection = () => {
+  const { ref: headerRef, isVisible: headerVisible } = useScrollAnimation();
+  const { ref: booksRef, isVisible: booksVisible } = useScrollAnimation({ threshold: 0.1 });
+
   return (
     <section id="library" className="py-20 md:py-32 bg-card relative overflow-hidden">
       {/* Noise Overlay */}
@@ -27,7 +31,10 @@ const LibrarySection = () => {
 
       <div className="container relative z-10">
         {/* Section Header */}
-        <div className="text-center mb-16 space-y-4">
+        <div 
+          ref={headerRef}
+          className={`text-center mb-16 space-y-4 ${headerVisible ? 'animate-blur-in' : 'scroll-hidden'}`}
+        >
           <span className="font-mono text-xs tracking-[0.3em] text-muted-foreground uppercase">
             [002] Literature
           </span>
@@ -41,9 +48,16 @@ const LibrarySection = () => {
         </div>
 
         {/* Books Display - Album Cover Style */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 max-w-4xl mx-auto">
-          {books.map((book) => (
-            <div key={book.id} className="group">
+        <div 
+          ref={booksRef}
+          className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 max-w-4xl mx-auto"
+        >
+          {books.map((book, index) => (
+            <div 
+              key={book.id} 
+              className={`group ${booksVisible ? (index === 0 ? 'animate-slide-right' : 'animate-slide-left') : 'scroll-hidden'}`}
+              style={{ animationDelay: `${index * 150}ms` }}
+            >
               {/* Book Cover */}
               <div className="relative aspect-[2/3] overflow-hidden shadow-2xl mb-6 transform group-hover:scale-105 transition-transform duration-500">
                 <img

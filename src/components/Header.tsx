@@ -1,19 +1,39 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Menu, X, ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      const windowHeight = window.innerHeight;
+      const progress = Math.min(scrollY / (windowHeight * 0.5), 1);
+      setScrollProgress(progress);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const navItems = [
     { label: "Shop", href: "/#shop" },
     { label: "Library", href: "/#library" },
     { label: "About", href: "/#about" },
     { label: "Brands & Friends", href: "/#brands" },
+    { label: "Contact", href: "/contact" },
   ];
 
+  // Calculate header opacity: starts at 90%, goes down to 40%
+  const headerOpacity = 0.9 - (scrollProgress * 0.5);
+
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-md border-b border-border">
+    <header 
+      className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md border-b border-border transition-all duration-300"
+      style={{ backgroundColor: `hsl(var(--background) / ${headerOpacity})` }}
+    >
       <div className="container flex items-center justify-between h-16 md:h-20">
         {/* Logo Text with Pulsating Glow */}
         <a href="/" className="flex items-center">
