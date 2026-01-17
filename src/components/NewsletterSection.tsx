@@ -1,26 +1,29 @@
-import { useState } from "react";
+import { useState, memo, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Mail, Sparkles, Tag, Bell } from "lucide-react";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import { useHapticFeedback } from "@/hooks/useHapticFeedback";
 
-const NewsletterSection = () => {
+const NewsletterSection = memo(() => {
   const [email, setEmail] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
   const { ref: sectionRef, isVisible } = useScrollAnimation();
+  const { trigger } = useHapticFeedback();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = useCallback((e: React.FormEvent) => {
     e.preventDefault();
     if (email) {
+      trigger('medium');
       setIsSubmitted(true);
       setEmail("");
     }
-  };
+  }, [email, trigger]);
 
   const benefits = [
     { icon: Bell, text: "Upcoming releases & drops" },
     { icon: Sparkles, text: "New product announcements" },
-    { icon: Tag, text: "Exclusive discounts & promos" },
+    { icon: Tag, text: "Exclusive promo codes" },
   ];
 
   return (
@@ -38,7 +41,10 @@ const NewsletterSection = () => {
             Stay Nfluential
           </h2>
           
-          <p className="text-muted-foreground text-lg mb-8">
+          <p className="text-muted-foreground text-lg mb-4">
+            Get exclusive promo codes and be the first to get updates and Nfluential news.
+          </p>
+          <p className="text-muted-foreground/70 text-sm mb-8">
             Join the movement. Be the first to know about everything that matters.
           </p>
 
@@ -83,6 +89,8 @@ const NewsletterSection = () => {
       </div>
     </section>
   );
-};
+});
+
+NewsletterSection.displayName = 'NewsletterSection';
 
 export default NewsletterSection;
