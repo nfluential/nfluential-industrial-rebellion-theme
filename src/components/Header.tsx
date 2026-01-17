@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Menu, X, ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import SocialIcons from "@/components/SocialIcons";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -18,8 +19,18 @@ const Header = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const handleSmoothScroll = useCallback((e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    const targetId = href.replace('/#', '');
+    const element = document.getElementById(targetId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    setIsMenuOpen(false);
+  }, []);
+
   const navItems = [
-    { label: "Shop", href: "/#shop" },
+    { label: "Shop", href: "#", isExternal: true },
     { label: "Library", href: "/#library" },
     { label: "About", href: "/#about" },
     { label: "Brands & Friends", href: "/#brands" },
@@ -43,16 +54,18 @@ const Header = () => {
         </a>
 
         {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center gap-8">
+        <nav className="hidden md:flex items-center gap-6">
           {navItems.map((item) => (
             <a
               key={item.label}
               href={item.href}
+              onClick={(e) => !item.isExternal && handleSmoothScroll(e, item.href)}
               className="font-display text-sm uppercase tracking-widest text-muted-foreground hover:text-primary transition-colors"
             >
               {item.label}
             </a>
           ))}
+          <SocialIcons iconSize="w-4 h-4" variant="header" />
         </nav>
 
         {/* Actions */}
@@ -79,18 +92,25 @@ const Header = () => {
       {/* Mobile Menu */}
       {isMenuOpen && (
         <div className="md:hidden fixed inset-0 top-16 bg-background z-40">
-          <nav className="flex flex-col items-center justify-center h-full gap-8">
+          <nav className="flex flex-col items-center justify-center h-full gap-6">
             {navItems.map((item) => (
               <a
                 key={item.label}
                 href={item.href}
-                onClick={() => setIsMenuOpen(false)}
-                className="font-display text-3xl uppercase tracking-widest text-foreground hover:text-primary transition-colors"
+                onClick={(e) => {
+                  if (!item.isExternal) {
+                    handleSmoothScroll(e, item.href);
+                  } else {
+                    setIsMenuOpen(false);
+                  }
+                }}
+                className="font-display text-2xl uppercase tracking-widest text-foreground hover:text-primary transition-colors"
               >
                 {item.label}
               </a>
             ))}
-            <Button variant="hero" size="lg" className="mt-8">
+            <SocialIcons iconSize="w-6 h-6" className="mt-4" />
+            <Button variant="hero" size="lg" className="mt-6">
               Join the Movement
             </Button>
           </nav>

@@ -19,7 +19,7 @@ import {
 import { MessageSquare, Send, AlertTriangle, XCircle, RotateCcw } from "lucide-react";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { useHapticFeedback } from "@/hooks/useHapticFeedback";
-import heroImage from "@/assets/quick-connect-hero.jpg";
+import bgImage from "@/assets/quick-connect-bg.jpg";
 
 const subjects = [
   { value: "collabs", label: "Collabs/Partnering" },
@@ -89,8 +89,19 @@ const QuickConnectSection = memo(() => {
   }, [trigger]);
 
   return (
-    <section id="contact" className="py-20 md:py-32 bg-background">
-      <div className="container">
+    <section 
+      id="contact" 
+      className="py-20 md:py-32 relative overflow-hidden"
+    >
+      {/* Background Image */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: `url(${bgImage})` }}
+      >
+        <div className="absolute inset-0 bg-background/85 backdrop-blur-sm" />
+      </div>
+
+      <div className="container relative z-10">
         <div 
           ref={sectionRef}
           className={`${isVisible ? 'animate-scale-in' : 'scroll-hidden'}`}
@@ -107,20 +118,9 @@ const QuickConnectSection = memo(() => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 max-w-6xl mx-auto">
-            {/* Image */}
-            <div className="relative overflow-hidden rounded-lg aspect-[4/3] lg:aspect-auto">
-              <img 
-                src={heroImage} 
-                alt="Reaching out to connect" 
-                className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
-                loading="lazy"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent" />
-            </div>
-
+          <div className="max-w-2xl mx-auto">
             {/* Form */}
-            <div className="bg-card border border-border rounded-lg p-6 md:p-8">
+            <div className="bg-card/95 backdrop-blur-md border border-border rounded-lg p-6 md:p-8">
               {showSuccess ? (
                 <div className="flex flex-col items-center justify-center h-full min-h-[400px] text-center">
                   <div className="w-20 h-20 rounded-full bg-primary/20 flex items-center justify-center mb-6">
