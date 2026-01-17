@@ -23,7 +23,7 @@ const Header = () => {
     { label: "Library", href: "/#library" },
     { label: "About", href: "/#about" },
     { label: "Brands & Friends", href: "/#brands" },
-    { label: "Contact", href: "/contact" },
+    { label: "Contact", href: "/#contact" },
   ];
 
   // Calculate header opacity: starts at 90%, goes down to 40%

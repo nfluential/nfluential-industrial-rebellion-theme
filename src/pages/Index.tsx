@@ -1,12 +1,22 @@
+import { lazy, Suspense } from "react";
 import Header from "@/components/Header";
 import HeroSection from "@/components/HeroSection";
-import AboutSection from "@/components/AboutSection";
-import ShopSection from "@/components/ShopSection";
-import LibrarySection from "@/components/LibrarySection";
-import BrandsFriendsSection from "@/components/BrandsFriendsSection";
-import ManifestoSection from "@/components/ManifestoSection";
-import NewsletterSection from "@/components/NewsletterSection";
 import Footer from "@/components/Footer";
+
+// Lazy load below-fold sections for performance
+const AboutSection = lazy(() => import("@/components/AboutSection"));
+const ShopSection = lazy(() => import("@/components/ShopSection"));
+const LibrarySection = lazy(() => import("@/components/LibrarySection"));
+const BrandsFriendsSection = lazy(() => import("@/components/BrandsFriendsSection"));
+const ManifestoSection = lazy(() => import("@/components/ManifestoSection"));
+const QuickConnectSection = lazy(() => import("@/components/QuickConnectSection"));
+const NewsletterSection = lazy(() => import("@/components/NewsletterSection"));
+
+const SectionFallback = () => (
+  <div className="py-20 flex items-center justify-center">
+    <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+  </div>
+);
 
 const Index = () => {
   return (
@@ -14,12 +24,27 @@ const Index = () => {
       <Header />
       <main>
         <HeroSection />
-        <AboutSection />
-        <ShopSection />
-        <LibrarySection />
-        <BrandsFriendsSection />
-        <ManifestoSection />
-        <NewsletterSection />
+        <Suspense fallback={<SectionFallback />}>
+          <AboutSection />
+        </Suspense>
+        <Suspense fallback={<SectionFallback />}>
+          <ShopSection />
+        </Suspense>
+        <Suspense fallback={<SectionFallback />}>
+          <LibrarySection />
+        </Suspense>
+        <Suspense fallback={<SectionFallback />}>
+          <BrandsFriendsSection />
+        </Suspense>
+        <Suspense fallback={<SectionFallback />}>
+          <ManifestoSection />
+        </Suspense>
+        <Suspense fallback={<SectionFallback />}>
+          <QuickConnectSection />
+        </Suspense>
+        <Suspense fallback={<SectionFallback />}>
+          <NewsletterSection />
+        </Suspense>
       </main>
       <Footer />
     </div>
