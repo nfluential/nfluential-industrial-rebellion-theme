@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Mail, Sparkles, Tag, Bell } from "lucide-react";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { useHapticFeedback } from "@/hooks/useHapticFeedback";
+import bgImage from "@/assets/newsletter-bg.jpg";
 
 const NewsletterSection = memo(() => {
   const [email, setEmail] = useState("");
@@ -27,8 +28,16 @@ const NewsletterSection = memo(() => {
   ];
 
   return (
-    <section className="py-20 md:py-32 bg-muted/30">
-      <div className="container">
+    <section className="py-20 md:py-32 relative overflow-hidden">
+      {/* Background Image */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: `url(${bgImage})` }}
+      >
+        <div className="absolute inset-0 bg-background/80 backdrop-blur-sm" />
+      </div>
+
+      <div className="container relative z-10">
         <div 
           ref={sectionRef}
           className={`max-w-2xl mx-auto text-center ${isVisible ? 'animate-blur-in' : 'scroll-hidden'}`}
@@ -52,7 +61,7 @@ const NewsletterSection = memo(() => {
             {benefits.map((benefit, index) => (
               <div 
                 key={index}
-                className="flex items-center gap-2 bg-background/50 border border-border rounded-full px-4 py-2"
+                className="flex items-center gap-2 bg-background/50 backdrop-blur-sm border border-border rounded-full px-4 py-2"
               >
                 <benefit.icon className="w-4 h-4 text-primary" />
                 <span className="text-sm font-medium">{benefit.text}</span>
@@ -61,7 +70,7 @@ const NewsletterSection = memo(() => {
           </div>
 
           {isSubmitted ? (
-            <div className="bg-primary/10 border border-primary/20 rounded-lg p-6">
+            <div className="bg-primary/10 border border-primary/20 backdrop-blur-sm rounded-lg p-6">
               <p className="text-primary font-display text-xl font-bold">
                 You're in. Welcome to the movement.
               </p>
@@ -74,7 +83,7 @@ const NewsletterSection = memo(() => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="flex-1 h-12 bg-background border-border"
+                className="flex-1 h-12 bg-background/80 backdrop-blur-sm border-border"
               />
               <Button type="submit" variant="default" size="lg" className="h-12">
                 Subscribe
