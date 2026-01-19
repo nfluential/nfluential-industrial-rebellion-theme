@@ -1,8 +1,11 @@
+import { useCallback, useState } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import ProductCard from "@/components/ProductCard";
 import hoodieImg from "@/assets/product-hoodie.jpg";
 import croptopImg from "@/assets/product-croptop.jpg";
 import sweatsImg from "@/assets/product-sweats.jpg";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import { Button } from "@/components/ui/button";
 
 const products = [
   {
@@ -51,7 +54,19 @@ const products = [
 
 const ShopSection = () => {
   const { ref: headerRef, isVisible: headerVisible } = useScrollAnimation();
-  const { ref: gridRef, isVisible: gridVisible } = useScrollAnimation({ threshold: 0.05 });
+  const { ref: carouselRef, isVisible: carouselVisible } = useScrollAnimation({ threshold: 0.05 });
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const itemsPerView = typeof window !== 'undefined' && window.innerWidth < 768 ? 1 : 3;
+  const maxIndex = Math.max(0, products.length - itemsPerView);
+
+  const handlePrev = useCallback(() => {
+    setCurrentIndex(prev => Math.max(0, prev - 1));
+  }, []);
+
+  const handleNext = useCallback(() => {
+    setCurrentIndex(prev => Math.min(maxIndex, prev + 1));
+  }, [maxIndex]);
 
   return (
     <section id="shop" className="py-20 md:py-32 bg-background">
@@ -72,24 +87,62 @@ const ShopSection = () => {
           </p>
         </div>
 
-        {/* Product Grid - Masonry Style */}
+        {/* Carousel */}
         <div 
-          ref={gridRef}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
+          ref={carouselRef}
+          className={`relative ${carouselVisible ? 'animate-scale-in' : 'scroll-hidden'}`}
         >
-          {products.map((product, index) => (
-            <div
-              key={product.id}
-              className={`${
-                index === 0 || index === 4 ? "sm:row-span-1" : ""
-              } ${gridVisible ? 'animate-scale-in' : 'scroll-hidden'}`}
-              style={{ 
-                animationDelay: `${index * 100}ms`,
-              }}
+          {/* Navigation Buttons */}
+          <Button 
+            variant="ghost" 
+            size="icon"
+            onClick={handlePrev}
+            disabled={currentIndex === 0}
+            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 -ml-4 bg-background/80 backdrop-blur-sm disabled:opacity-30"
+          >
+            <ChevronLeft className="w-6 h-6" />
+          </Button>
+          
+          <Button 
+            variant="ghost" 
+            size="icon"
+            onClick={handleNext}
+            disabled={currentIndex >= maxIndex}
+            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 -mr-4 bg-background/80 backdrop-blur-sm disabled:opacity-30"
+          >
+            <ChevronRight className="w-6 h-6" />
+          </Button>
+
+          {/* Carousel Track */}
+          <div className="overflow-hidden mx-8">
+            <div 
+              className="flex transition-transform duration-500 ease-out gap-6"
+              style={{ transform: `translateX(-${currentIndex * (100 / itemsPerView)}%)` }}
             >
-              <ProductCard {...product} />
+              {products.map((product) => (
+                <div
+                  key={product.id}
+                  className="flex-shrink-0 w-full md:w-[calc(33.333%-1rem)]"
+                >
+                  <ProductCard {...product} />
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
+
+          {/* Dots Indicator */}
+          <div className="flex justify-center gap-2 mt-8">
+            {Array.from({ length: maxIndex + 1 }).map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => setCurrentIndex(idx)}
+                className={`w-2 h-2 rounded-full transition-all ${
+                  idx === currentIndex ? 'bg-primary w-6' : 'bg-muted-foreground/30'
+                }`}
+                aria-label={`Go to slide ${idx + 1}`}
+              />
+            ))}
+          </div>
         </div>
 
         {/* View All CTA */}
