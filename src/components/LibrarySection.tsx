@@ -1,3 +1,5 @@
+import { useCallback, useState } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import bookCover1 from "@/assets/book-cover-1.jpg";
 import bookCover2 from "@/assets/book-cover-2.jpg";
@@ -18,11 +20,37 @@ const books = [
     author: "Asad Carter",
     price: "$22.99",
   },
+  {
+    id: 3,
+    image: bookCover1,
+    title: "Street Philosophy",
+    author: "Asad Carter",
+    price: "$19.99",
+  },
+  {
+    id: 4,
+    image: bookCover2,
+    title: "Raw & Uncut Stories",
+    author: "Asad Carter",
+    price: "$21.99",
+  },
 ];
 
 const LibrarySection = () => {
   const { ref: headerRef, isVisible: headerVisible } = useScrollAnimation();
-  const { ref: booksRef, isVisible: booksVisible } = useScrollAnimation({ threshold: 0.1 });
+  const { ref: carouselRef, isVisible: carouselVisible } = useScrollAnimation({ threshold: 0.1 });
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const itemsPerView = typeof window !== 'undefined' && window.innerWidth < 768 ? 1 : 2;
+  const maxIndex = Math.max(0, books.length - itemsPerView);
+
+  const handlePrev = useCallback(() => {
+    setCurrentIndex(prev => Math.max(0, prev - 1));
+  }, []);
+
+  const handleNext = useCallback(() => {
+    setCurrentIndex(prev => Math.min(maxIndex, prev + 1));
+  }, [maxIndex]);
 
   return (
     <section id="library" className="py-20 md:py-32 bg-card relative overflow-hidden">
@@ -47,47 +75,89 @@ const LibrarySection = () => {
           </p>
         </div>
 
-        {/* Books Display - Album Cover Style */}
+        {/* Carousel */}
         <div 
-          ref={booksRef}
-          className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 max-w-4xl mx-auto"
+          ref={carouselRef}
+          className={`relative max-w-4xl mx-auto ${carouselVisible ? 'animate-blur-in' : 'scroll-hidden'}`}
         >
-          {books.map((book, index) => (
-            <div 
-              key={book.id} 
-              className={`group ${booksVisible ? (index === 0 ? 'animate-slide-right' : 'animate-slide-left') : 'scroll-hidden'}`}
-              style={{ animationDelay: `${index * 150}ms` }}
-            >
-              {/* Book Cover */}
-              <div className="relative aspect-[2/3] overflow-hidden shadow-2xl mb-6 transform group-hover:scale-105 transition-transform duration-500">
-                <img
-                  src={book.image}
-                  alt={book.title}
-                  className="w-full h-full object-cover"
-                />
-                {/* Vinyl-style hover effect */}
-                <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              </div>
+          {/* Navigation Buttons */}
+          <Button 
+            variant="ghost" 
+            size="icon"
+            onClick={handlePrev}
+            disabled={currentIndex === 0}
+            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 -ml-4 bg-background/80 backdrop-blur-sm disabled:opacity-30"
+          >
+            <ChevronLeft className="w-6 h-6" />
+          </Button>
+          
+          <Button 
+            variant="ghost" 
+            size="icon"
+            onClick={handleNext}
+            disabled={currentIndex >= maxIndex}
+            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 -mr-4 bg-background/80 backdrop-blur-sm disabled:opacity-30"
+          >
+            <ChevronRight className="w-6 h-6" />
+          </Button>
 
-              {/* Book Info */}
-              <div className="space-y-2 text-center md:text-left">
-                <h3 className="font-display text-2xl uppercase tracking-wide">
-                  {book.title}
-                </h3>
-                <p className="font-mono text-sm text-muted-foreground">
-                  by {book.author}
-                </p>
-                <div className="flex items-center justify-center md:justify-start gap-4 pt-2">
-                  <span className="font-mono text-lg text-primary font-bold">
-                    {book.price}
-                  </span>
-                  <Button variant="outline" size="sm">
-                    Add to Cart
-                  </Button>
+          {/* Carousel Track */}
+          <div className="overflow-hidden mx-8">
+            <div 
+              className="flex transition-transform duration-500 ease-out gap-8"
+              style={{ transform: `translateX(-${currentIndex * (100 / itemsPerView)}%)` }}
+            >
+              {books.map((book) => (
+                <div 
+                  key={book.id} 
+                  className="flex-shrink-0 w-full md:w-[calc(50%-1rem)] group"
+                >
+                  {/* Book Cover */}
+                  <div className="relative aspect-[2/3] overflow-hidden shadow-2xl mb-6 transform group-hover:scale-105 transition-transform duration-500">
+                    <img
+                      src={book.image}
+                      alt={book.title}
+                      className="w-full h-full object-cover"
+                    />
+                    {/* Vinyl-style hover effect */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  </div>
+
+                  {/* Book Info */}
+                  <div className="space-y-2 text-center">
+                    <h3 className="font-display text-xl md:text-2xl uppercase tracking-wide">
+                      {book.title}
+                    </h3>
+                    <p className="font-mono text-sm text-muted-foreground">
+                      by {book.author}
+                    </p>
+                    <div className="flex items-center justify-center gap-4 pt-2">
+                      <span className="font-mono text-lg text-primary font-bold">
+                        {book.price}
+                      </span>
+                      <Button variant="outline" size="sm">
+                        Add to Cart
+                      </Button>
+                    </div>
+                  </div>
                 </div>
-              </div>
+              ))}
             </div>
-          ))}
+          </div>
+
+          {/* Dots Indicator */}
+          <div className="flex justify-center gap-2 mt-8">
+            {Array.from({ length: maxIndex + 1 }).map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => setCurrentIndex(idx)}
+                className={`w-2 h-2 rounded-full transition-all ${
+                  idx === currentIndex ? 'bg-primary w-6' : 'bg-muted-foreground/30'
+                }`}
+                aria-label={`Go to slide ${idx + 1}`}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </section>

@@ -1,6 +1,5 @@
 import { useState, useCallback } from "react";
 import { Rocket } from "lucide-react";
-import logo from "@/assets/nfluential-logo.png";
 import SocialIcons from "@/components/SocialIcons";
 
 const Footer = () => {
@@ -22,74 +21,18 @@ const Footer = () => {
   return (
     <footer className="bg-card border-t border-border py-8 md:py-12 mb-16 md:mb-0 relative">
       <div className="container">
-        <div className="flex flex-col md:flex-row gap-6 md:gap-8">
-          {/* Brand */}
-          <div className="md:flex-shrink-0">
-            <img src={logo} alt="Nfluential" className="h-12 w-auto mb-3 opacity-80" />
-            <p className="font-mono text-[10px] text-muted-foreground leading-relaxed max-w-[180px]">
-              Urban streetwear and literature for the fearless.
-            </p>
-          </div>
-
-          {/* Links Container */}
-          <div className="flex-1 flex flex-wrap gap-x-6 gap-y-4 md:gap-x-8 md:justify-end">
-            {/* Shop */}
-            <div className="min-w-fit">
-              <h4 className="font-display text-xs uppercase tracking-wider mb-2 text-foreground">
-                Shop
-              </h4>
-              <ul className="flex flex-wrap gap-x-3 gap-y-1">
-                {["Hoodies", "Crop Tops", "Sweats", "Accessories"].map((item) => (
-                  <li key={item}>
-                    <a href="#" className="font-mono text-[10px] text-muted-foreground hover:text-primary transition-colors whitespace-nowrap">
-                      {item}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Library */}
-            <div className="min-w-fit">
-              <h4 className="font-display text-xs uppercase tracking-wider mb-2 text-foreground">
-                Library
-              </h4>
-              <ul className="flex flex-wrap gap-x-3 gap-y-1">
-                {["All Books", "Asad Carter", "Urban Comedy"].map((item) => (
-                  <li key={item}>
-                    <a href="#" className="font-mono text-[10px] text-muted-foreground hover:text-primary transition-colors whitespace-nowrap">
-                      {item}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Connect */}
-            <div className="min-w-fit">
-              <h4 className="font-display text-xs uppercase tracking-wider mb-2 text-foreground">
-                Connect
-              </h4>
-              <SocialIcons iconSize="w-4 h-4" />
-            </div>
-          </div>
-        </div>
-        {/* Bottom Bar */}
-        <div className="border-t border-border mt-6 pt-4 flex flex-wrap items-center justify-between gap-2">
-          <p className="font-mono text-[10px] text-muted-foreground">
-            © 2026 Nfluential
+        {/* Centered Copyright Section */}
+        <div className="flex flex-col items-center text-center space-y-3">
+          <p className="font-mono text-xs text-muted-foreground">
+            © 2026 Nfluential, LLC
           </p>
-          <div className="flex items-center gap-3">
-            <a href="#" className="font-mono text-[10px] text-muted-foreground hover:text-primary transition-colors">
-              Privacy
-            </a>
-            <a href="#" className="font-mono text-[10px] text-muted-foreground hover:text-primary transition-colors">
-              Terms
-            </a>
-            <a href="#" className="font-mono text-[10px] text-muted-foreground hover:text-primary transition-colors">
-              Shipping
-            </a>
-          </div>
+          <a 
+            href="#" 
+            className="font-mono text-[10px] text-muted-foreground hover:text-primary transition-colors"
+          >
+            Terms and Policies
+          </a>
+          <SocialIcons iconSize="w-4 h-4" className="pt-2" />
         </div>
       </div>
 
@@ -107,7 +50,7 @@ const Footer = () => {
         href="https://zi.gr"
         target="_blank"
         rel="noopener noreferrer"
-        className="absolute right-4 bottom-3 text-xs font-bold animate-pulse-glow hover:scale-110 transition-transform"
+        className="absolute right-4 bottom-3 text-[10px] font-bold animate-pulse-glow hover:scale-110 transition-transform"
         style={{ color: "hsl(175, 100%, 40%)" }}
         aria-label="Visit Zi"
       >

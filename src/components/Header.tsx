@@ -30,10 +30,9 @@ const Header = () => {
   }, []);
 
   const navItems = [
-    { label: "Shop", href: "#", isExternal: true },
+    { label: "Shop", href: "/#shop" },
     { label: "Library", href: "/#library" },
     { label: "About", href: "/#about" },
-    { label: "Brands & Friends", href: "/#brands" },
     { label: "Contact", href: "/#contact" },
   ];
 
@@ -59,7 +58,7 @@ const Header = () => {
             <a
               key={item.label}
               href={item.href}
-              onClick={(e) => !item.isExternal && handleSmoothScroll(e, item.href)}
+              onClick={(e) => handleSmoothScroll(e, item.href)}
               className="font-display text-sm uppercase tracking-widest text-muted-foreground hover:text-primary transition-colors"
             >
               {item.label}
@@ -89,21 +88,15 @@ const Header = () => {
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu with 50% transparent black overlay */}
       {isMenuOpen && (
-        <div className="md:hidden fixed inset-0 top-16 bg-background z-40">
-          <nav className="flex flex-col items-center justify-center h-full gap-6">
+        <div className="md:hidden fixed inset-0 top-16 bg-black/50 backdrop-blur-sm z-40">
+          <nav className="flex flex-col items-center justify-center h-full gap-6 bg-background/95 mx-4 my-8 rounded-lg">
             {navItems.map((item) => (
               <a
                 key={item.label}
                 href={item.href}
-                onClick={(e) => {
-                  if (!item.isExternal) {
-                    handleSmoothScroll(e, item.href);
-                  } else {
-                    setIsMenuOpen(false);
-                  }
-                }}
+                onClick={(e) => handleSmoothScroll(e, item.href)}
                 className="font-display text-2xl uppercase tracking-widest text-foreground hover:text-primary transition-colors"
               >
                 {item.label}

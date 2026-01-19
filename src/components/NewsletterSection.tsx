@@ -1,7 +1,6 @@
 import { useState, memo, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Mail, Sparkles, Tag, Bell } from "lucide-react";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { useHapticFeedback } from "@/hooks/useHapticFeedback";
 import bgImage from "@/assets/newsletter-bg.jpg";
@@ -21,12 +20,6 @@ const NewsletterSection = memo(() => {
     }
   }, [email, trigger]);
 
-  const benefits = [
-    { icon: Bell, text: "Upcoming releases & drops" },
-    { icon: Sparkles, text: "New product announcements" },
-    { icon: Tag, text: "Exclusive promo codes" },
-  ];
-
   return (
     <section className="py-20 md:py-32 relative overflow-hidden">
       {/* Background Image */}
@@ -34,40 +27,25 @@ const NewsletterSection = memo(() => {
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: `url(${bgImage})` }}
       >
-        <div className="absolute inset-0 bg-background/80 backdrop-blur-sm" />
+        <div className="absolute inset-0 bg-background/85 backdrop-blur-sm" />
       </div>
 
       <div className="container relative z-10">
         <div 
           ref={sectionRef}
-          className={`max-w-2xl mx-auto text-center ${isVisible ? 'animate-blur-in' : 'scroll-hidden'}`}
+          className={`max-w-3xl mx-auto text-center ${isVisible ? 'animate-blur-in' : 'scroll-hidden'}`}
         >
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-6">
-            <Mail className="w-8 h-8 text-primary" />
-          </div>
-          
-          <h2 className="font-display text-3xl md:text-4xl font-bold uppercase tracking-tight mb-4">
-            Stay Nfluential
+          <h2 className="font-display text-3xl md:text-5xl font-bold uppercase tracking-tight mb-6">
+            This is Not Just a Brand.
           </h2>
           
-          <p className="text-muted-foreground text-lg mb-4">
-            Get exclusive promo codes and be the first to get updates and Nfluential news.
+          <h3 className="font-display text-2xl md:text-3xl font-bold text-primary mb-8">
+            This is a Movement.
+          </h3>
+          
+          <p className="text-muted-foreground text-lg md:text-xl leading-relaxed mb-10 max-w-2xl mx-auto">
+            Born in the shadows of doubt, forged in the fire of ambition. Nfluential isn't about following trends—it's about setting them. We are the dreamers who became the doers. The outcasts who became the icons. The fearless few who refused to be ordinary.
           </p>
-          <p className="text-muted-foreground/70 text-sm mb-8">
-            Join the movement. Be the first to know about everything that matters.
-          </p>
-
-          <div className="flex flex-wrap justify-center gap-4 mb-10">
-            {benefits.map((benefit, index) => (
-              <div 
-                key={index}
-                className="flex items-center gap-2 bg-background/50 backdrop-blur-sm border border-border rounded-full px-4 py-2"
-              >
-                <benefit.icon className="w-4 h-4 text-primary" />
-                <span className="text-sm font-medium">{benefit.text}</span>
-              </div>
-            ))}
-          </div>
 
           {isSubmitted ? (
             <div className="bg-primary/10 border border-primary/20 backdrop-blur-sm rounded-lg p-6">
@@ -86,7 +64,7 @@ const NewsletterSection = memo(() => {
                 className="flex-1 h-12 bg-background/80 backdrop-blur-sm border-border"
               />
               <Button type="submit" variant="default" size="lg" className="h-12">
-                Subscribe
+                Join Us
               </Button>
             </form>
           )}
