@@ -88,10 +88,10 @@ const Header = () => {
         </div>
       </div>
 
-      {/* Mobile Menu with 50% transparent black overlay */}
+      {/* Mobile Menu with 40% transparent black overlay */}
       {isMenuOpen && (
-        <div className="md:hidden fixed inset-0 top-16 bg-black/50 backdrop-blur-sm z-40">
-          <nav className="flex flex-col items-center justify-center h-full gap-6 bg-background/95 mx-4 my-8 rounded-lg">
+        <div className="md:hidden fixed inset-0 top-0 bg-black/40 backdrop-blur-sm z-40">
+          <nav className="flex flex-col items-center justify-center gap-6 bg-background/95 mx-4 mt-24 mb-8 rounded-lg py-8">
             {navItems.map((item) => (
               <a
                 key={item.label}

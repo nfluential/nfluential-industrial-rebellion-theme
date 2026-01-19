@@ -6,11 +6,29 @@ const Footer = () => {
   const [isLaunching, setIsLaunching] = useState(false);
 
   const scrollToTop = useCallback(() => {
-    if ('vibrate' in navigator) navigator.vibrate([10]);
+    if ('vibrate' in navigator) navigator.vibrate([10, 50, 10]);
     setIsLaunching(true);
     
-    // Smooth scroll to top
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    // Animate scroll to top manually for better mobile support
+    const duration = 800;
+    const start = window.scrollY;
+    const startTime = performance.now();
+    
+    const animateScroll = (currentTime: number) => {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      
+      // Easing function for smooth deceleration
+      const easeOutCubic = 1 - Math.pow(1 - progress, 3);
+      
+      window.scrollTo(0, start * (1 - easeOutCubic));
+      
+      if (progress < 1) {
+        requestAnimationFrame(animateScroll);
+      }
+    };
+    
+    requestAnimationFrame(animateScroll);
     
     // Reset animation after scroll completes
     setTimeout(() => {

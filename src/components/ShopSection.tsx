@@ -113,16 +113,16 @@ const ShopSection = () => {
             <ChevronRight className="w-6 h-6" />
           </Button>
 
-          {/* Carousel Track */}
-          <div className="overflow-hidden mx-8">
+          {/* Carousel Track - Touch scrollable on mobile */}
+          <div className="overflow-x-auto md:overflow-hidden mx-4 md:mx-8 scrollbar-hide touch-pan-x">
             <div 
-              className="flex transition-transform duration-500 ease-out gap-6"
-              style={{ transform: `translateX(-${currentIndex * (100 / itemsPerView)}%)` }}
+              className="flex transition-transform duration-500 ease-out gap-4 md:gap-6 md:touch-none"
+              style={{ transform: typeof window !== 'undefined' && window.innerWidth >= 768 ? `translateX(-${currentIndex * (100 / itemsPerView)}%)` : 'none' }}
             >
               {products.map((product) => (
                 <div
                   key={product.id}
-                  className="flex-shrink-0 w-full md:w-[calc(33.333%-1rem)]"
+                  className="flex-shrink-0 w-[280px] md:w-[calc(33.333%-1rem)]"
                 >
                   <ProductCard {...product} />
                 </div>
