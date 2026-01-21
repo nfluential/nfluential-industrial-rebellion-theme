@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { Menu, X, ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import SocialIcons from "@/components/SocialIcons";
@@ -6,6 +6,8 @@ import SocialIcons from "@/components/SocialIcons";
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -19,6 +21,28 @@ const Header = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Close menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent | TouchEvent) => {
+      if (
+        isMenuOpen &&
+        menuRef.current &&
+        !menuRef.current.contains(event.target as Node) &&
+        menuButtonRef.current &&
+        !menuButtonRef.current.contains(event.target as Node)
+      ) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("touchstart", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleClickOutside);
+    };
+  }, [isMenuOpen]);
+
   const handleSmoothScroll = useCallback((e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
     const targetId = href.replace('/#', '');
@@ -26,6 +50,10 @@ const Header = () => {
     if (element) {
       element.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
+    setIsMenuOpen(false);
+  }, []);
+
+  const handleCloseMenu = useCallback(() => {
     setIsMenuOpen(false);
   }, []);
 
@@ -78,6 +106,7 @@ const Header = () => {
 
           {/* Mobile Menu Toggle */}
           <Button
+            ref={menuButtonRef}
             variant="ghost"
             size="icon"
             className="md:hidden"
@@ -91,7 +120,19 @@ const Header = () => {
       {/* Mobile Menu with 40% transparent black overlay */}
       {isMenuOpen && (
         <div className="md:hidden fixed inset-0 top-0 bg-black/40 backdrop-blur-sm z-40">
-          <nav className="flex flex-col items-center justify-center gap-6 bg-background/95 mx-4 mt-24 mb-8 rounded-lg py-8">
+          {/* Close Button at top */}
+          <button
+            onClick={handleCloseMenu}
+            className="absolute top-5 right-4 p-2 text-foreground hover:text-primary transition-colors z-50"
+            aria-label="Close menu"
+          >
+            <X className="h-8 w-8" />
+          </button>
+          
+          <nav 
+            ref={menuRef}
+            className="flex flex-col items-center justify-center gap-6 bg-background/95 mx-4 mt-24 mb-8 rounded-lg py-8"
+          >
             {navItems.map((item) => (
               <a
                 key={item.label}
@@ -103,7 +144,7 @@ const Header = () => {
               </a>
             ))}
             <SocialIcons iconSize="w-6 h-6" className="mt-4" />
-            <Button variant="hero" size="lg" className="mt-6">
+            <Button variant="hero" size="lg" className="mt-6" onClick={handleCloseMenu}>
               Join the Movement
             </Button>
           </nav>

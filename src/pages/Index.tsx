@@ -9,6 +9,7 @@ const ShopSection = lazy(() => import("@/components/ShopSection"));
 const LibrarySection = lazy(() => import("@/components/LibrarySection"));
 const QuickConnectSection = lazy(() => import("@/components/QuickConnectSection"));
 const NewsletterSection = lazy(() => import("@/components/NewsletterSection"));
+const FriendsMarquee = lazy(() => import("@/components/FriendsMarquee"));
 
 const SectionFallback = () => (
   <div className="py-20 flex items-center justify-center">
@@ -36,6 +37,9 @@ const Index = () => {
         </Suspense>
         <Suspense fallback={<SectionFallback />}>
           <NewsletterSection />
+        </Suspense>
+        <Suspense fallback={<SectionFallback />}>
+          <FriendsMarquee />
         </Suspense>
       </main>
       <Footer />

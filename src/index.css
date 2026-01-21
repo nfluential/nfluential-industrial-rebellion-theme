@@ -335,6 +335,93 @@
     animation: marquee 20s linear infinite;
   }
 
+  .animate-marquee-slow {
+    animation: marquee 40s linear infinite;
+  }
+
+  /* Glitch Text Effect */
+  .glitch-text {
+    position: relative;
+    display: inline-block;
+  }
+
+  .glitch-text::before,
+  .glitch-text::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+  }
+
+  .glitch-text::before {
+    color: hsl(0 100% 50%);
+    animation: glitch-text-1 3s infinite;
+    clip-path: polygon(0 0, 100% 0, 100% 35%, 0 35%);
+  }
+
+  .glitch-text::after {
+    color: hsl(200 100% 50%);
+    animation: glitch-text-2 3s infinite;
+    clip-path: polygon(0 65%, 100% 65%, 100% 100%, 0 100%);
+  }
+
+  @keyframes glitch-text-1 {
+    0%, 100% {
+      opacity: 0;
+      transform: translate(0);
+    }
+    7%, 10% {
+      opacity: 0.8;
+      transform: translate(-3px, -2px);
+    }
+    8%, 9% {
+      opacity: 0.8;
+      transform: translate(3px, 1px);
+    }
+    27%, 30% {
+      opacity: 0.8;
+      transform: translate(2px, -1px) skewX(2deg);
+    }
+    55%, 58% {
+      opacity: 0.8;
+      transform: translate(-2px, 2px);
+    }
+    72%, 75% {
+      opacity: 0.8;
+      transform: translate(1px, -1px) skewX(-1deg);
+    }
+  }
+
+  @keyframes glitch-text-2 {
+    0%, 100% {
+      opacity: 0;
+      transform: translate(0);
+    }
+    12%, 15% {
+      opacity: 0.8;
+      transform: translate(2px, 2px);
+    }
+    35%, 38% {
+      opacity: 0.8;
+      transform: translate(-3px, 1px) skewX(-2deg);
+    }
+    50%, 53% {
+      opacity: 0.8;
+      transform: translate(3px, -2px);
+    }
+    65%, 68% {
+      opacity: 0.8;
+      transform: translate(-1px, 1px) skewX(1deg);
+    }
+    85%, 88% {
+      opacity: 0.8;
+      transform: translate(2px, 0);
+    }
+  }
+
   /* Chain Breaking Animations */
   @keyframes chain-break-left {
     0% {
