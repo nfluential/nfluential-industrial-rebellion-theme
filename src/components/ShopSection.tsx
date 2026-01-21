@@ -114,9 +114,9 @@ const ShopSection = () => {
           </Button>
 
           {/* Carousel Track - Touch scrollable on mobile */}
-          <div className="overflow-x-auto md:overflow-hidden mx-4 md:mx-8 scrollbar-hide touch-pan-x">
+          <div className="overflow-x-auto md:overflow-hidden mx-4 md:mx-8 scrollbar-hide touch-pan-y overscroll-x-auto">
             <div 
-              className="flex transition-transform duration-500 ease-out gap-4 md:gap-6 md:touch-none"
+              className="flex transition-transform duration-500 ease-out gap-4 md:gap-6"
               style={{ transform: typeof window !== 'undefined' && window.innerWidth >= 768 ? `translateX(-${currentIndex * (100 / itemsPerView)}%)` : 'none' }}
             >
               {products.map((product) => (
@@ -128,6 +128,13 @@ const ShopSection = () => {
                 </div>
               ))}
             </div>
+          </div>
+
+          {/* Swipe Indicator (Mobile only) */}
+          <div className="flex md:hidden justify-center items-center gap-2 mt-4 text-muted-foreground">
+            <span className="text-lg animate-pulse">←</span>
+            <span className="font-mono text-xs uppercase tracking-widest">Swipe</span>
+            <span className="text-lg animate-pulse">→</span>
           </div>
 
           {/* Dots Indicator */}

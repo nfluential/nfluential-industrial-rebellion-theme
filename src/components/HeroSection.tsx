@@ -2,6 +2,14 @@ import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
 import heroImage from "@/assets/hero-cityscape.jpg";
 
+const GlitchText = ({ children, className = "" }: { children: string; className?: string }) => {
+  return (
+    <span className={`glitch-text ${className}`} data-text={children}>
+      {children}
+    </span>
+  );
+};
+
 const HeroSection = () => {
   return (
     <section className="relative h-screen w-full overflow-hidden">
@@ -24,9 +32,9 @@ const HeroSection = () => {
 
           {/* Main Headline */}
           <h1 className="font-display text-5xl md:text-7xl lg:text-8xl font-bold leading-none">
-            For The <span className="text-primary glow-eagles">Fearless</span>.
+            For The <GlitchText className="text-primary glow-eagles">Fearless</GlitchText>.
             <br />
-            The <span className="text-primary glow-eagles">Nfluential</span>.
+            The <GlitchText className="text-primary glow-eagles">Nfluential</GlitchText>.
           </h1>
 
           {/* Subheadline */}
