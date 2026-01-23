@@ -6,8 +6,12 @@ const Footer = () => {
   const [isLaunching, setIsLaunching] = useState(false);
 
   const scrollToTop = useCallback(() => {
-    if ('vibrate' in navigator) navigator.vibrate([10, 50, 10]);
+    // Vibrate pattern: rumble
+    if ('vibrate' in navigator) navigator.vibrate([50, 30, 50, 30, 100]);
     setIsLaunching(true);
+    
+    // Add shake effect to the whole page
+    document.body.classList.add('rocket-shake');
     
     // Animate scroll to top manually for better mobile support
     const duration = 800;
@@ -29,6 +33,11 @@ const Footer = () => {
     };
     
     requestAnimationFrame(animateScroll);
+    
+    // Remove shake after animation
+    setTimeout(() => {
+      document.body.classList.remove('rocket-shake');
+    }, 600);
     
     // Reset animation after scroll completes
     setTimeout(() => {
