@@ -6,11 +6,18 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LoadingScreen from "./components/LoadingScreen";
 import Index from "./pages/Index";
+import { useCartSync } from "./hooks/useCartSync";
 
 const About = lazy(() => import("./pages/About"));
 const NotFound = lazy(() => import("./pages/NotFound"));
+const ProductPage = lazy(() => import("./pages/ProductPage"));
 
 const queryClient = new QueryClient();
+
+function CartSyncProvider({ children }: { children: React.ReactNode }) {
+  useCartSync();
+  return <>{children}</>;
+}
 
 const App = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -18,19 +25,22 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        {isLoading && <LoadingScreen onLoadComplete={() => setIsLoading(false)} />}
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Suspense fallback={null}>
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/about" element={<About />} />
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </Suspense>
-        </BrowserRouter>
+        <CartSyncProvider>
+          {isLoading && <LoadingScreen onLoadComplete={() => setIsLoading(false)} />}
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <Suspense fallback={null}>
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/product/:handle" element={<ProductPage />} />
+                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </Suspense>
+          </BrowserRouter>
+        </CartSyncProvider>
       </TooltipProvider>
     </QueryClientProvider>
   );

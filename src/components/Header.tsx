@@ -1,7 +1,8 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import { Menu, X, ShoppingBag } from "lucide-react";
+import { Menu, X, Search, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import SocialIcons from "@/components/SocialIcons";
+import { CartDrawer } from "@/components/CartDrawer";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -96,23 +97,29 @@ const Header = () => {
         </nav>
 
         {/* Actions */}
-        <div className="flex items-center gap-4">
-          <Button variant="ghost" size="icon" className="relative">
-            <ShoppingBag className="h-5 w-5" />
-            <span className="absolute -top-1 -right-1 h-4 w-4 bg-primary text-primary-foreground text-xs flex items-center justify-center font-mono">
-              0
-            </span>
+        <div className="flex items-center gap-2 md:gap-3">
+          {/* Search Icon */}
+          <Button variant="ghost" size="icon" className="h-9 w-9">
+            <Search className="h-4 w-4" />
           </Button>
+
+          {/* Account Icon */}
+          <Button variant="ghost" size="icon" className="h-9 w-9">
+            <User className="h-4 w-4" />
+          </Button>
+
+          {/* Cart Drawer */}
+          <CartDrawer />
 
           {/* Mobile Menu Toggle */}
           <Button
             ref={menuButtonRef}
             variant="ghost"
             size="icon"
-            className="md:hidden"
+            className="md:hidden h-9 w-9"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
-            {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </Button>
         </div>
       </div>
