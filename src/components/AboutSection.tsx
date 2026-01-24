@@ -129,10 +129,10 @@ const AboutSection = () => {
             ref={ctaRef}
             className={`text-center py-12 md:py-16 border-t border-b border-border ${ctaVisible ? 'animate-scale-in' : 'scroll-hidden'}`}
           >
-            <h3 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-primary glow-eagles">
-              ARE YOU NFLUENTIAL?
-            </h3>
-          </div>
+          <h3 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-primary glow-eagles">
+            ARE YOU <span className="underline decoration-4 underline-offset-8">NFLUENTIAL</span>?
+          </h3>
+        </div>
 
         </div>
       </div>

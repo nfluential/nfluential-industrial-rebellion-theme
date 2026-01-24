@@ -28,7 +28,7 @@ const brands: Brand[] = [
   {
     name: "RAiN DRiP",
     logo: raindripLogo,
-    url: "https://www.raindrop.in",
+    url: "https://www.raindrip.in",
     description: "Premium Designer Products by Autumn Rain",
   },
   {
