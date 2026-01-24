@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useState, useRef, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import bookCover1 from "@/assets/book-cover-1.jpg";
@@ -41,7 +41,23 @@ const LibrarySection = () => {
   const { ref: carouselRef, isVisible: carouselVisible } = useScrollAnimation({ threshold: 0.1 });
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const itemsPerView = typeof window !== 'undefined' && window.innerWidth < 768 ? 1 : 2;
+  // Responsive items per view
+  const [itemsPerView, setItemsPerView] = useState(2);
+  
+  useEffect(() => {
+    const updateItemsPerView = () => {
+      if (window.innerWidth < 640) {
+        setItemsPerView(1);
+      } else {
+        setItemsPerView(2);
+      }
+    };
+    
+    updateItemsPerView();
+    window.addEventListener('resize', updateItemsPerView);
+    return () => window.removeEventListener('resize', updateItemsPerView);
+  }, []);
+
   const maxIndex = Math.max(0, books.length - itemsPerView);
 
   const handlePrev = useCallback(() => {
@@ -52,24 +68,47 @@ const LibrarySection = () => {
     setCurrentIndex(prev => Math.min(maxIndex, prev + 1));
   }, [maxIndex]);
 
+  // Touch/swipe handling
+  const touchStartX = useRef<number>(0);
+  const touchEndX = useRef<number>(0);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    touchEndX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    const diff = touchStartX.current - touchEndX.current;
+    const threshold = 50;
+
+    if (diff > threshold && currentIndex < maxIndex) {
+      setCurrentIndex(prev => Math.min(maxIndex, prev + 1));
+    } else if (diff < -threshold && currentIndex > 0) {
+      setCurrentIndex(prev => Math.max(0, prev - 1));
+    }
+  };
+
   return (
-    <section id="library" className="py-20 md:py-32 bg-card relative overflow-hidden">
+    <section id="library" className="py-16 sm:py-20 md:py-32 bg-card relative overflow-hidden">
       {/* Noise Overlay */}
       <div className="absolute inset-0 noise-overlay" />
 
-      <div className="container relative z-10">
+      <div className="container relative z-10 px-4 sm:px-6">
         {/* Section Header */}
         <div 
           ref={headerRef}
-          className={`text-center mb-16 space-y-4 ${headerVisible ? 'animate-blur-in' : 'scroll-hidden'}`}
+          className={`text-center mb-10 sm:mb-16 space-y-3 sm:space-y-4 ${headerVisible ? 'animate-blur-in' : 'scroll-hidden'}`}
         >
-          <span className="font-mono text-xs tracking-[0.3em] text-muted-foreground uppercase">
+          <span className="font-mono text-[10px] sm:text-xs tracking-[0.3em] text-muted-foreground uppercase">
             [002] Literature
           </span>
-          <h2 className="font-display text-4xl md:text-6xl font-bold">
+          <h2 className="font-display text-3xl sm:text-4xl md:text-6xl font-bold">
             The <span className="text-primary">Library</span>
           </h2>
-          <p className="font-mono text-sm text-muted-foreground max-w-lg mx-auto">
+          <p className="font-mono text-xs sm:text-sm text-muted-foreground max-w-lg mx-auto px-4">
             Featuring <span className="text-foreground">Asad Carter</span> — The Literary King of Comedy. 
             Raw stories from the streets, told with unfiltered truth.
           </p>
@@ -80,15 +119,15 @@ const LibrarySection = () => {
           ref={carouselRef}
           className={`relative max-w-4xl mx-auto ${carouselVisible ? 'animate-blur-in' : 'scroll-hidden'}`}
         >
-          {/* Navigation Buttons */}
+          {/* Navigation Buttons - Hidden on mobile */}
           <Button 
             variant="ghost" 
             size="icon"
             onClick={handlePrev}
             disabled={currentIndex === 0}
-            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 -ml-4 bg-background/80 backdrop-blur-sm disabled:opacity-30"
+            className="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 -ml-2 md:-ml-4 bg-background/80 backdrop-blur-sm disabled:opacity-30"
           >
-            <ChevronLeft className="w-6 h-6" />
+            <ChevronLeft className="w-5 h-5 md:w-6 md:h-6" />
           </Button>
           
           <Button 
@@ -96,46 +135,52 @@ const LibrarySection = () => {
             size="icon"
             onClick={handleNext}
             disabled={currentIndex >= maxIndex}
-            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 -mr-4 bg-background/80 backdrop-blur-sm disabled:opacity-30"
+            className="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 -mr-2 md:-mr-4 bg-background/80 backdrop-blur-sm disabled:opacity-30"
           >
-            <ChevronRight className="w-6 h-6" />
+            <ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
           </Button>
 
-          {/* Carousel Track - Touch scrollable on mobile */}
-          <div className="overflow-x-auto md:overflow-hidden mx-4 md:mx-8 scrollbar-hide touch-pan-y overscroll-x-auto">
+          {/* Carousel Track - Touch swipeable */}
+          <div 
+            className="overflow-hidden mx-0 sm:mx-4 md:mx-8"
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+          >
             <div 
-              className="flex transition-transform duration-500 ease-out gap-6 md:gap-8"
-              style={{ transform: typeof window !== 'undefined' && window.innerWidth >= 768 ? `translateX(-${currentIndex * (100 / itemsPerView)}%)` : 'none' }}
+              className="flex transition-transform duration-500 ease-out gap-4 sm:gap-6 md:gap-8"
+              style={{ transform: `translateX(-${currentIndex * (100 / itemsPerView)}%)` }}
             >
               {books.map((book) => (
                 <div 
                   key={book.id} 
-                  className="flex-shrink-0 w-[260px] md:w-[calc(50%-1rem)] group"
+                  className="flex-shrink-0 w-full sm:w-[calc(50%-1rem)] group"
                 >
                   {/* Book Cover */}
-                  <div className="relative aspect-[2/3] overflow-hidden shadow-2xl mb-6 transform group-hover:scale-105 transition-transform duration-500">
+                  <div className="relative aspect-[2/3] overflow-hidden shadow-2xl mb-4 sm:mb-6 transform group-hover:scale-105 transition-transform duration-500">
                     <img
                       src={book.image}
                       alt={book.title}
                       className="w-full h-full object-cover"
+                      loading="lazy"
                     />
                     {/* Vinyl-style hover effect */}
                     <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   </div>
 
                   {/* Book Info */}
-                  <div className="space-y-2 text-center">
-                    <h3 className="font-display text-xl md:text-2xl uppercase tracking-wide">
+                  <div className="space-y-1.5 sm:space-y-2 text-center">
+                    <h3 className="font-display text-lg sm:text-xl md:text-2xl uppercase tracking-wide line-clamp-1">
                       {book.title}
                     </h3>
-                    <p className="font-mono text-sm text-muted-foreground">
+                    <p className="font-mono text-xs sm:text-sm text-muted-foreground">
                       by {book.author}
                     </p>
-                    <div className="flex items-center justify-center gap-4 pt-2">
-                      <span className="font-mono text-lg text-primary font-bold">
+                    <div className="flex items-center justify-center gap-3 sm:gap-4 pt-2">
+                      <span className="font-mono text-base sm:text-lg text-primary font-bold">
                         {book.price}
                       </span>
-                      <Button variant="outline" size="sm">
+                      <Button variant="outline" size="sm" className="text-xs sm:text-sm">
                         Add to Cart
                       </Button>
                     </div>
@@ -146,20 +191,20 @@ const LibrarySection = () => {
           </div>
 
           {/* Swipe Indicator (Mobile only) */}
-          <div className="flex md:hidden justify-center items-center gap-2 mt-4 text-muted-foreground">
+          <div className="flex sm:hidden justify-center items-center gap-2 mt-4 text-muted-foreground">
             <span className="text-lg animate-pulse">←</span>
-            <span className="font-mono text-xs uppercase tracking-widest">Swipe</span>
+            <span className="font-mono text-[10px] uppercase tracking-widest">Swipe</span>
             <span className="text-lg animate-pulse">→</span>
           </div>
 
           {/* Dots Indicator */}
-          <div className="flex justify-center gap-2 mt-8">
+          <div className="flex justify-center gap-1.5 sm:gap-2 mt-6 sm:mt-8">
             {Array.from({ length: maxIndex + 1 }).map((_, idx) => (
               <button
                 key={idx}
                 onClick={() => setCurrentIndex(idx)}
-                className={`w-2 h-2 rounded-full transition-all ${
-                  idx === currentIndex ? 'bg-primary w-6' : 'bg-muted-foreground/30'
+                className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full transition-all ${
+                  idx === currentIndex ? 'bg-primary w-4 sm:w-6' : 'bg-muted-foreground/30'
                 }`}
                 aria-label={`Go to slide ${idx + 1}`}
               />

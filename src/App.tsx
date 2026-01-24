@@ -11,6 +11,8 @@ import { useCartSync } from "./hooks/useCartSync";
 const About = lazy(() => import("./pages/About"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const ProductPage = lazy(() => import("./pages/ProductPage"));
+const Auth = lazy(() => import("./pages/Auth"));
+const Search = lazy(() => import("./pages/Search"));
 
 const queryClient = new QueryClient();
 
@@ -35,6 +37,8 @@ const App = () => {
                 <Route path="/" element={<Index />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/product/:handle" element={<ProductPage />} />
+                <Route path="/auth" element={<Auth />} />
+                <Route path="/search" element={<Search />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
