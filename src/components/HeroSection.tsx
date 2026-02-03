@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
+import { Link } from "react-router-dom";
 import heroImage from "@/assets/hero-cityscape.jpg";
 
 const HeroSection = () => {
@@ -37,12 +38,16 @@ const HeroSection = () => {
 
           {/* CTAs */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-            <Button variant="hero" size="lg">
-              Shop the Collection
-            </Button>
-            <Button variant="outline" size="lg">
-              Explore the Library
-            </Button>
+            <Link to="/shop">
+              <Button variant="hero" size="lg">
+                Shop the Collection
+              </Button>
+            </Link>
+            <Link to="/library">
+              <Button variant="outline" size="lg">
+                Explore the Library
+              </Button>
+            </Link>
           </div>
         </div>
 

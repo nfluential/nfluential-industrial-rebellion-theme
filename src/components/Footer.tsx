@@ -4,7 +4,25 @@ import SocialIcons from "@/components/SocialIcons";
 
 const Footer = () => {
   const [isLaunching, setIsLaunching] = useState(false);
+  const [showRocket, setShowRocket] = useState(false);
+  const footerRef = useRef<HTMLElement>(null);
   const rocketRef = useRef<HTMLButtonElement>(null);
+
+  // Show rocket only when footer is visible
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setShowRocket(entry.isIntersecting);
+      },
+      { threshold: 0.1 }
+    );
+
+    if (footerRef.current) {
+      observer.observe(footerRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
 
   const scrollToTop = useCallback(() => {
     if (isLaunching) return;
@@ -49,7 +67,7 @@ const Footer = () => {
   }, [isLaunching]);
 
   return (
-    <footer className="bg-card border-t border-border py-8 md:py-12 mb-16 md:mb-0 relative">
+    <footer ref={footerRef} className="bg-card border-t border-border py-8 md:py-12 mb-16 md:mb-0 relative">
       <div className="container px-4 sm:px-6">
         {/* Centered Copyright Section */}
         <div className="flex flex-col items-center text-center space-y-3">
@@ -66,22 +84,30 @@ const Footer = () => {
         </div>
       </div>
 
-      {/* Teleport Up Button - Rocket with liftoff animation - ALWAYS ON TOP */}
-      <button
-        ref={rocketRef}
-        onClick={scrollToTop}
-        disabled={isLaunching}
-        className={`fixed right-4 sm:right-6 bottom-20 sm:bottom-24 md:bottom-8 w-12 h-12 sm:w-10 sm:h-10 bg-primary hover:bg-primary/80 text-primary-foreground rounded-none flex items-center justify-center transition-all duration-300 shadow-brutal group overflow-visible z-[9999] ${isLaunching ? 'rocket-launching' : 'hover:scale-110'}`}
-        aria-label="Teleport to top"
-        style={{ pointerEvents: isLaunching ? 'none' : 'auto' }}
-      >
-        <Rocket className={`w-5 h-5 sm:w-4 sm:h-4 transform -rotate-45 transition-transform duration-300 ${isLaunching ? 'animate-rocket-liftoff' : 'group-hover:animate-bounce'}`} />
-        
-        {/* Exhaust flame trail when launching */}
-        {isLaunching && (
+      {/* Teleport Up Button - Only visible when at footer */}
+      {showRocket && (
+        <button
+          ref={rocketRef}
+          onClick={scrollToTop}
+          disabled={isLaunching}
+          className={`fixed right-4 sm:right-6 bottom-20 sm:bottom-24 md:bottom-8 w-12 h-12 sm:w-10 sm:h-10 bg-primary hover:bg-primary/80 text-primary-foreground rounded-none flex items-center justify-center transition-all duration-300 shadow-brutal group overflow-visible ${isLaunching ? '' : 'hover:scale-110'}`}
+          aria-label="Teleport to top"
+          style={{ pointerEvents: isLaunching ? 'none' : 'auto' }}
+        >
+          <Rocket className={`w-5 h-5 sm:w-4 sm:h-4 transform -rotate-45 transition-transform duration-300 ${isLaunching ? '' : 'group-hover:animate-bounce'}`} />
+        </button>
+      )}
+
+      {/* Flying Rocket - Top layer, only during launch */}
+      {isLaunching && (
+        <div 
+          className="fixed right-4 sm:right-6 bottom-20 sm:bottom-24 md:bottom-8 w-12 h-12 sm:w-10 sm:h-10 flex items-center justify-center z-[9999] pointer-events-none animate-rocket-liftoff"
+        >
+          <Rocket className="w-5 h-5 sm:w-4 sm:h-4 transform -rotate-45 text-primary" />
+          {/* Exhaust flame trail */}
           <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-2 h-8 bg-gradient-to-b from-primary via-accent to-transparent rounded-full animate-pulse" />
-        )}
-      </button>
+        </div>
+      )}
 
       {/* Zi Link - Bottom Right Corner */}
       <a

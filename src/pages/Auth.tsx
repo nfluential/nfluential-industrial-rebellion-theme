@@ -9,7 +9,7 @@ import { z } from "zod";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { User, Session } from "@supabase/supabase-js";
-import { Loader2, Mail, Lock, ArrowRight } from "lucide-react";
+import { Loader2, ArrowRight } from "lucide-react";
 
 const emailSchema = z.string().email("Please enter a valid email address");
 const passwordSchema = z.string().min(6, "Password must be at least 6 characters");
@@ -135,37 +135,31 @@ const Auth = () => {
               <Label htmlFor="email" className="font-mono text-xs uppercase tracking-widest">
                 Email
               </Label>
-              <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="you@example.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="pl-10 h-11 sm:h-12 bg-card border-border"
-                  required
-                />
-              </div>
+              <Input
+                id="email"
+                type="email"
+                placeholder="you@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="h-11 sm:h-12 bg-card border-border"
+                required
+              />
             </div>
 
             <div className="space-y-2">
               <Label htmlFor="password" className="font-mono text-xs uppercase tracking-widest">
                 Password
               </Label>
-              <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                <Input
-                  id="password"
-                  type="password"
-                  placeholder="••••••••"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="pl-10 h-11 sm:h-12 bg-card border-border"
-                  required
-                  minLength={6}
-                />
-              </div>
+              <Input
+                id="password"
+                type="password"
+                placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="h-11 sm:h-12 bg-card border-border"
+                required
+                minLength={6}
+              />
             </div>
 
             <Button 

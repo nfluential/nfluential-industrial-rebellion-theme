@@ -13,6 +13,8 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 const ProductPage = lazy(() => import("./pages/ProductPage"));
 const Auth = lazy(() => import("./pages/Auth"));
 const Search = lazy(() => import("./pages/Search"));
+const Shop = lazy(() => import("./pages/Shop"));
+const Library = lazy(() => import("./pages/Library"));
 
 const queryClient = new QueryClient();
 
@@ -36,6 +38,8 @@ const App = () => {
               <Routes>
                 <Route path="/" element={<Index />} />
                 <Route path="/about" element={<About />} />
+                <Route path="/shop" element={<Shop />} />
+                <Route path="/library" element={<Library />} />
                 <Route path="/product/:handle" element={<ProductPage />} />
                 <Route path="/auth" element={<Auth />} />
                 <Route path="/search" element={<Search />} />
