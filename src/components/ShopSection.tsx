@@ -1,104 +1,37 @@
-import { useCallback, useState, useRef, useEffect } from "react";
 import { ChevronLeft, ChevronRight, Loader2, ShoppingBag } from "lucide-react";
-import { useScrollAnimation } from "@/hooks/useScrollAnimation";
-import { Button } from "@/components/ui/button";
-import { useShopifyProducts } from "@/hooks/useShopifyProducts";
-import { useCartStore } from "@/stores/cartStore";
-import { toast } from "sonner";
 import { Link } from "react-router-dom";
-
-// Fallback mock products for when store has no products
-import hoodieImg from "@/assets/product-hoodie.jpg";
-import croptopImg from "@/assets/product-croptop.jpg";
-import sweatsImg from "@/assets/product-sweats.jpg";
-
-const mockProducts = [
-  { id: 1, image: hoodieImg, name: "Fearless Hoodie", price: "$89.00", category: "Hoodies" },
-  { id: 2, image: croptopImg, name: "Rebellion Crop", price: "$49.00", category: "Crop Tops" },
-  { id: 3, image: sweatsImg, name: "Movement Sweats", price: "$75.00", category: "Bottoms" },
-];
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import { useCarousel } from "@/hooks/useCarousel";
+import { useAddToCart } from "@/hooks/useAddToCart";
+import { Button } from "@/components/ui/button";
+import ShopifyProductCard from "@/components/ShopifyProductCard";
+import { useShopifyProducts } from "@/hooks/useShopifyProducts";
 
 const ShopSection = () => {
   const { ref: headerRef, isVisible: headerVisible } = useScrollAnimation();
   const { ref: carouselRef, isVisible: carouselVisible } = useScrollAnimation({ threshold: 0.05 });
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
   
-  const { products: shopifyProducts, loading, error } = useShopifyProducts(12);
-  const { addItem, isLoading: cartLoading } = useCartStore();
-  const [addingProductId, setAddingProductId] = useState<string | null>(null);
-
-  const hasShopifyProducts = shopifyProducts.length > 0;
-  const displayProducts = hasShopifyProducts ? shopifyProducts : [];
-
-  // Responsive items per view
-  const [itemsPerView, setItemsPerView] = useState(3);
+  const { products, loading, error } = useShopifyProducts(12);
+  const { handleAddToCart, addingProductId, cartLoading } = useAddToCart();
   
-  useEffect(() => {
-    const updateItemsPerView = () => {
-      if (window.innerWidth < 640) {
-        setItemsPerView(1);
-      } else if (window.innerWidth < 1024) {
-        setItemsPerView(2);
-      } else {
-        setItemsPerView(3);
-      }
-    };
-    
-    updateItemsPerView();
-    window.addEventListener('resize', updateItemsPerView);
-    return () => window.removeEventListener('resize', updateItemsPerView);
-  }, []);
+  const {
+    currentIndex,
+    itemsPerView,
+    maxIndex,
+    handlePrev,
+    handleNext,
+    goToIndex,
+    handleTouchStart,
+    handleTouchMove,
+    handleTouchEnd,
+    canGoPrev,
+    canGoNext,
+  } = useCarousel({
+    totalItems: products.length,
+    breakpoints: { sm: 1, md: 2, lg: 3 },
+  });
 
-  const maxIndex = Math.max(0, (hasShopifyProducts ? shopifyProducts.length : mockProducts.length) - itemsPerView);
-
-  const handlePrev = useCallback(() => {
-    setCurrentIndex(prev => Math.max(0, prev - 1));
-  }, []);
-
-  const handleNext = useCallback(() => {
-    setCurrentIndex(prev => Math.min(maxIndex, prev + 1));
-  }, [maxIndex]);
-
-  // Touch/swipe handling for mobile
-  const touchStartX = useRef<number>(0);
-  const touchEndX = useRef<number>(0);
-
-  const handleTouchStart = (e: React.TouchEvent) => {
-    touchStartX.current = e.touches[0].clientX;
-  };
-
-  const handleTouchMove = (e: React.TouchEvent) => {
-    touchEndX.current = e.touches[0].clientX;
-  };
-
-  const handleTouchEnd = () => {
-    const diff = touchStartX.current - touchEndX.current;
-    const threshold = 50;
-
-    if (diff > threshold && currentIndex < maxIndex) {
-      setCurrentIndex(prev => Math.min(maxIndex, prev + 1));
-    } else if (diff < -threshold && currentIndex > 0) {
-      setCurrentIndex(prev => Math.max(0, prev - 1));
-    }
-  };
-
-  const handleAddToCart = async (product: typeof shopifyProducts[0]) => {
-    const variant = product.node.variants.edges[0]?.node;
-    if (!variant) return;
-    
-    setAddingProductId(product.node.id);
-    await addItem({
-      product,
-      variantId: variant.id,
-      variantTitle: variant.title,
-      price: variant.price,
-      quantity: 1,
-      selectedOptions: variant.selectedOptions
-    });
-    setAddingProductId(null);
-    toast.success("Added to cart", { description: product.node.title });
-  };
+  const hasProducts = products.length > 0;
 
   return (
     <section id="shop" className="py-16 sm:py-20 md:py-32 bg-background">
@@ -134,7 +67,7 @@ const ShopSection = () => {
         )}
 
         {/* No Products State */}
-        {!loading && !error && !hasShopifyProducts && (
+        {!loading && !error && !hasProducts && (
           <div className="text-center py-12 sm:py-16 space-y-3 sm:space-y-4">
             <ShoppingBag className="w-12 h-12 sm:w-16 sm:h-16 mx-auto text-muted-foreground/50" />
             <h3 className="font-display text-xl sm:text-2xl uppercase">No Products Yet</h3>
@@ -144,18 +77,18 @@ const ShopSection = () => {
           </div>
         )}
 
-        {/* Shopify Products Carousel */}
-        {!loading && !error && hasShopifyProducts && (
+        {/* Products Carousel */}
+        {!loading && !error && hasProducts && (
           <div 
             ref={carouselRef}
             className={`relative ${carouselVisible ? 'animate-scale-in' : 'scroll-hidden'}`}
           >
-            {/* Navigation Buttons - Hidden on mobile */}
+            {/* Navigation Buttons */}
             <Button 
               variant="ghost" 
               size="icon"
               onClick={handlePrev}
-              disabled={currentIndex === 0}
+              disabled={!canGoPrev}
               className="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 -ml-2 md:-ml-4 bg-background/80 backdrop-blur-sm disabled:opacity-30"
             >
               <ChevronLeft className="w-5 h-5 md:w-6 md:h-6" />
@@ -165,15 +98,14 @@ const ShopSection = () => {
               variant="ghost" 
               size="icon"
               onClick={handleNext}
-              disabled={currentIndex >= maxIndex}
+              disabled={!canGoNext}
               className="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 -mr-2 md:-mr-4 bg-background/80 backdrop-blur-sm disabled:opacity-30"
             >
               <ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
             </Button>
 
-            {/* Carousel Track with touch swipe */}
+            {/* Carousel Track */}
             <div 
-              ref={scrollContainerRef}
               className="overflow-hidden mx-0 sm:mx-4 md:mx-8"
               onTouchStart={handleTouchStart}
               onTouchMove={handleTouchMove}
@@ -183,59 +115,23 @@ const ShopSection = () => {
                 className="flex transition-transform duration-500 ease-out gap-3 sm:gap-4 md:gap-6"
                 style={{ transform: `translateX(-${currentIndex * (100 / itemsPerView)}%)` }}
               >
-                {displayProducts.map((product) => {
-                  const image = product.node.images.edges[0]?.node;
-                  const price = product.node.priceRange.minVariantPrice;
-                  const isAdding = addingProductId === product.node.id;
-                  
-                  return (
-                    <div
-                      key={product.node.id}
-                      className="flex-shrink-0 w-full sm:w-[calc(50%-0.5rem)] lg:w-[calc(33.333%-1rem)] group"
-                    >
-                      <div className="bg-card border border-border overflow-hidden transition-all duration-300 hover:border-primary hover:shadow-glow">
-                        <Link to={`/product/${product.node.handle}`} className="block aspect-[3/4] overflow-hidden bg-muted">
-                          {image ? (
-                            <img 
-                              src={image.url} 
-                              alt={image.altText || product.node.title}
-                              className="w-full h-full object-cover grayscale-hover"
-                              loading="lazy"
-                            />
-                          ) : (
-                            <div className="w-full h-full flex items-center justify-center text-muted-foreground">
-                              No image
-                            </div>
-                          )}
-                        </Link>
-                        <div className="p-3 sm:p-4 space-y-2 sm:space-y-3">
-                          <Link to={`/product/${product.node.handle}`}>
-                            <h3 className="font-display text-base sm:text-lg uppercase tracking-wide group-hover:text-primary transition-colors line-clamp-1">
-                              {product.node.title}
-                            </h3>
-                          </Link>
-                          <div className="flex items-center justify-between gap-2">
-                            <span className="font-mono text-primary text-base sm:text-lg">
-                              {price.currencyCode} {parseFloat(price.amount).toFixed(2)}
-                            </span>
-                            <Button 
-                              size="sm" 
-                              onClick={() => handleAddToCart(product)}
-                              disabled={cartLoading || isAdding}
-                              className="text-xs sm:text-sm px-2 sm:px-3"
-                            >
-                              {isAdding ? <Loader2 className="w-3 h-3 sm:w-4 sm:h-4 animate-spin" /> : "Add"}
-                            </Button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
+                {products.map((product) => (
+                  <div
+                    key={product.node.id}
+                    className="flex-shrink-0 w-full sm:w-[calc(50%-0.5rem)] lg:w-[calc(33.333%-1rem)]"
+                  >
+                    <ShopifyProductCard
+                      product={product}
+                      onAddToCart={handleAddToCart}
+                      isAdding={addingProductId === product.node.id}
+                      disabled={cartLoading}
+                    />
+                  </div>
+                ))}
               </div>
             </div>
 
-            {/* Swipe Indicator (Mobile only) */}
+            {/* Swipe Indicator (Mobile) */}
             <div className="flex sm:hidden justify-center items-center gap-2 mt-4 text-muted-foreground">
               <span className="text-lg animate-pulse">←</span>
               <span className="font-mono text-[10px] uppercase tracking-widest">Swipe</span>
@@ -247,7 +143,7 @@ const ShopSection = () => {
               {Array.from({ length: maxIndex + 1 }).map((_, idx) => (
                 <button
                   key={idx}
-                  onClick={() => setCurrentIndex(idx)}
+                  onClick={() => goToIndex(idx)}
                   className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full transition-all ${
                     idx === currentIndex ? 'bg-primary w-4 sm:w-6' : 'bg-muted-foreground/30'
                   }`}
@@ -259,14 +155,14 @@ const ShopSection = () => {
         )}
 
         {/* View All CTA */}
-        {hasShopifyProducts && (
+        {hasProducts && (
           <div className="text-center mt-8 sm:mt-12">
-            <a
-              href="#"
+            <Link
+              to="/shop"
               className="font-mono text-xs sm:text-sm uppercase tracking-widest text-muted-foreground hover:text-primary transition-colors border-b border-muted-foreground hover:border-primary pb-1"
             >
               View All Products →
-            </a>
+            </Link>
           </div>
         )}
       </div>
