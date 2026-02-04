@@ -8,7 +8,6 @@ import { toast } from "sonner";
 import { z } from "zod";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { User, Session } from "@supabase/supabase-js";
 import { Loader2, ArrowRight } from "lucide-react";
 
 const emailSchema = z.string().email("Please enter a valid email address");
@@ -19,28 +18,18 @@ const Auth = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [user, setUser] = useState<User | null>(null);
-  const [session, setSession] = useState<Session | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        setSession(session);
-        setUser(session?.user ?? null);
-        
-        // Redirect to home if logged in
+      (_, session) => {
         if (session?.user) {
           setTimeout(() => navigate('/'), 100);
         }
       }
     );
 
-    // THEN check for existing session
     supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
       if (session?.user) {
         navigate('/');
       }
@@ -52,7 +41,6 @@ const Auth = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Validate inputs
     const emailResult = emailSchema.safeParse(email);
     if (!emailResult.success) {
       toast.error(emailResult.error.errors[0].message);
@@ -69,42 +57,29 @@ const Auth = () => {
 
     try {
       if (isLogin) {
-        const { error } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        });
-
+        const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) {
-          if (error.message.includes("Invalid login credentials")) {
-            toast.error("Invalid email or password");
-          } else {
-            toast.error(error.message);
-          }
+          toast.error(error.message.includes("Invalid login credentials") 
+            ? "Invalid email or password" 
+            : error.message);
         } else {
           toast.success("Welcome back!");
         }
       } else {
-        const redirectUrl = `${window.location.origin}/`;
-        
         const { error } = await supabase.auth.signUp({
           email,
           password,
-          options: {
-            emailRedirectTo: redirectUrl
-          }
+          options: { emailRedirectTo: `${window.location.origin}/` }
         });
-
         if (error) {
-          if (error.message.includes("already registered")) {
-            toast.error("This email is already registered. Try logging in instead.");
-          } else {
-            toast.error(error.message);
-          }
+          toast.error(error.message.includes("already registered") 
+            ? "This email is already registered. Try logging in instead." 
+            : error.message);
         } else {
           toast.success("Account created! You're now logged in.");
         }
       }
-    } catch (error) {
+    } catch {
       toast.error("An unexpected error occurred");
     } finally {
       setLoading(false);
@@ -123,9 +98,7 @@ const Auth = () => {
               {isLogin ? "WELCOME BACK" : "JOIN THE MOVEMENT"}
             </h1>
             <p className="font-mono text-xs sm:text-sm text-muted-foreground">
-              {isLogin 
-                ? "Sign in to access your account" 
-                : "Create an account to get started"}
+              {isLogin ? "Sign in to access your account" : "Create an account to get started"}
             </p>
           </div>
 
@@ -185,9 +158,7 @@ const Auth = () => {
               onClick={() => setIsLogin(!isLogin)}
               className="font-mono text-xs sm:text-sm text-muted-foreground hover:text-primary transition-colors"
             >
-              {isLogin 
-                ? "Don't have an account? Sign up" 
-                : "Already have an account? Sign in"}
+              {isLogin ? "Don't have an account? Sign up" : "Already have an account? Sign in"}
             </button>
           </div>
         </div>

@@ -1,9 +1,9 @@
-import { useCallback, useState, useRef, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import { useCarousel } from "@/hooks/useCarousel";
 import bookCover1 from "@/assets/book-cover-1.jpg";
 import bookCover2 from "@/assets/book-cover-2.jpg";
-import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
 const books = [
   {
@@ -39,57 +39,23 @@ const books = [
 const LibrarySection = () => {
   const { ref: headerRef, isVisible: headerVisible } = useScrollAnimation();
   const { ref: carouselRef, isVisible: carouselVisible } = useScrollAnimation({ threshold: 0.1 });
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  // Responsive items per view
-  const [itemsPerView, setItemsPerView] = useState(2);
   
-  useEffect(() => {
-    const updateItemsPerView = () => {
-      if (window.innerWidth < 640) {
-        setItemsPerView(1);
-      } else {
-        setItemsPerView(2);
-      }
-    };
-    
-    updateItemsPerView();
-    window.addEventListener('resize', updateItemsPerView);
-    return () => window.removeEventListener('resize', updateItemsPerView);
-  }, []);
-
-  const maxIndex = Math.max(0, books.length - itemsPerView);
-
-  const handlePrev = useCallback(() => {
-    setCurrentIndex(prev => Math.max(0, prev - 1));
-  }, []);
-
-  const handleNext = useCallback(() => {
-    setCurrentIndex(prev => Math.min(maxIndex, prev + 1));
-  }, [maxIndex]);
-
-  // Touch/swipe handling
-  const touchStartX = useRef<number>(0);
-  const touchEndX = useRef<number>(0);
-
-  const handleTouchStart = (e: React.TouchEvent) => {
-    touchStartX.current = e.touches[0].clientX;
-  };
-
-  const handleTouchMove = (e: React.TouchEvent) => {
-    touchEndX.current = e.touches[0].clientX;
-  };
-
-  const handleTouchEnd = () => {
-    const diff = touchStartX.current - touchEndX.current;
-    const threshold = 50;
-
-    if (diff > threshold && currentIndex < maxIndex) {
-      setCurrentIndex(prev => Math.min(maxIndex, prev + 1));
-    } else if (diff < -threshold && currentIndex > 0) {
-      setCurrentIndex(prev => Math.max(0, prev - 1));
-    }
-  };
+  const {
+    currentIndex,
+    itemsPerView,
+    maxIndex,
+    handlePrev,
+    handleNext,
+    goToIndex,
+    handleTouchStart,
+    handleTouchMove,
+    handleTouchEnd,
+    canGoPrev,
+    canGoNext,
+  } = useCarousel({
+    totalItems: books.length,
+    breakpoints: { sm: 1, md: 2, lg: 2 },
+  });
 
   return (
     <section id="library" className="py-16 sm:py-20 md:py-32 bg-card relative overflow-hidden">
@@ -119,12 +85,12 @@ const LibrarySection = () => {
           ref={carouselRef}
           className={`relative max-w-4xl mx-auto ${carouselVisible ? 'animate-blur-in' : 'scroll-hidden'}`}
         >
-          {/* Navigation Buttons - Hidden on mobile */}
+          {/* Navigation Buttons */}
           <Button 
             variant="ghost" 
             size="icon"
             onClick={handlePrev}
-            disabled={currentIndex === 0}
+            disabled={!canGoPrev}
             className="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 -ml-2 md:-ml-4 bg-background/80 backdrop-blur-sm disabled:opacity-30"
           >
             <ChevronLeft className="w-5 h-5 md:w-6 md:h-6" />
@@ -134,13 +100,13 @@ const LibrarySection = () => {
             variant="ghost" 
             size="icon"
             onClick={handleNext}
-            disabled={currentIndex >= maxIndex}
+            disabled={!canGoNext}
             className="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 -mr-2 md:-mr-4 bg-background/80 backdrop-blur-sm disabled:opacity-30"
           >
             <ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
           </Button>
 
-          {/* Carousel Track - Touch swipeable */}
+          {/* Carousel Track */}
           <div 
             className="overflow-hidden mx-0 sm:mx-4 md:mx-8"
             onTouchStart={handleTouchStart}
@@ -164,7 +130,6 @@ const LibrarySection = () => {
                       className="w-full h-full object-cover"
                       loading="lazy"
                     />
-                    {/* Vinyl-style hover effect */}
                     <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   </div>
 
@@ -190,7 +155,7 @@ const LibrarySection = () => {
             </div>
           </div>
 
-          {/* Swipe Indicator (Mobile only) */}
+          {/* Swipe Indicator (Mobile) */}
           <div className="flex sm:hidden justify-center items-center gap-2 mt-4 text-muted-foreground">
             <span className="text-lg animate-pulse">←</span>
             <span className="font-mono text-[10px] uppercase tracking-widest">Swipe</span>
@@ -202,7 +167,7 @@ const LibrarySection = () => {
             {Array.from({ length: maxIndex + 1 }).map((_, idx) => (
               <button
                 key={idx}
-                onClick={() => setCurrentIndex(idx)}
+                onClick={() => goToIndex(idx)}
                 className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full transition-all ${
                   idx === currentIndex ? 'bg-primary w-4 sm:w-6' : 'bg-muted-foreground/30'
                 }`}
