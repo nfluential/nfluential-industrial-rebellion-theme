@@ -1,12 +1,31 @@
 import { useState, useCallback, useRef, useEffect } from "react";
-import { Rocket } from "lucide-react";
 import SocialIcons from "@/components/SocialIcons";
+
+// Custom rocket SVG for a unique premium look
+const RocketIcon = ({ className }: { className?: string }) => (
+  <svg 
+    viewBox="0 0 24 24" 
+    fill="none" 
+    stroke="currentColor" 
+    strokeWidth="1.5"
+    strokeLinecap="round" 
+    strokeLinejoin="round"
+    className={className}
+  >
+    <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z" />
+    <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z" />
+    <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0" />
+    <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5" />
+    {/* Flame trail */}
+    <path d="M6.5 17.5l-2 2" className="animate-pulse" />
+  </svg>
+);
 
 const Footer = () => {
   const [isLaunching, setIsLaunching] = useState(false);
   const [showRocket, setShowRocket] = useState(false);
+  const [rocketPosition, setRocketPosition] = useState({ bottom: 24, right: 24 });
   const footerRef = useRef<HTMLElement>(null);
-  const rocketRef = useRef<HTMLButtonElement>(null);
 
   // Show rocket only when footer is visible
   useEffect(() => {
@@ -27,19 +46,20 @@ const Footer = () => {
   const scrollToTop = useCallback(() => {
     if (isLaunching) return;
     
-    // Vibrate pattern: rumble
-    if ('vibrate' in navigator) navigator.vibrate([100, 50, 100, 50, 200]);
+    // Haptic feedback
+    if ('vibrate' in navigator) navigator.vibrate([50, 30, 100, 50, 200]);
     setIsLaunching(true);
     
-    // Phase 1: Shake the entire screen first (before liftoff)
+    // Phase 1: Intense screen shake (rumble before liftoff)
     document.documentElement.classList.add('rocket-shake');
     
-    // Phase 2: After shake, start the scroll
+    // Phase 2: After shake, rocket "pulls" the page up
     setTimeout(() => {
       document.documentElement.classList.remove('rocket-shake');
+      document.documentElement.classList.add('rocket-liftoff');
       
-      // Animate scroll to top with the rocket "dragging" the page
-      const duration = 1000;
+      // Animate scroll to top with exponential easing (rocket acceleration)
+      const duration = 1200;
       const start = window.scrollY;
       const startTime = performance.now();
       
@@ -47,10 +67,19 @@ const Footer = () => {
         const elapsed = currentTime - startTime;
         const progress = Math.min(elapsed / duration, 1);
         
-        // Easing function for "rocket pull" effect - fast start, smooth end
-        const easeOutExpo = 1 - Math.pow(1 - progress, 4);
+        // Rocket acceleration curve - slow start, fast finish
+        const easeInExpo = progress === 0 ? 0 : Math.pow(2, 10 * progress - 10);
+        const easeOutExpo = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+        const combined = progress < 0.3 ? easeInExpo * 3 : easeOutExpo;
         
-        window.scrollTo(0, start * (1 - easeOutExpo));
+        window.scrollTo(0, start * (1 - Math.min(combined, 1)));
+        
+        // Move rocket up as we scroll
+        const rocketProgress = Math.min(progress * 1.5, 1);
+        setRocketPosition({
+          bottom: 24 + (window.innerHeight * rocketProgress),
+          right: 24 + (Math.sin(rocketProgress * Math.PI * 2) * 10)
+        });
         
         if (progress < 1) {
           requestAnimationFrame(animateScroll);
@@ -58,11 +87,13 @@ const Footer = () => {
       };
       
       requestAnimationFrame(animateScroll);
-    }, 500); // Shake for 500ms first
+    }, 400);
     
-    // Reset animation after everything completes
+    // Reset everything after animation
     setTimeout(() => {
+      document.documentElement.classList.remove('rocket-liftoff');
       setIsLaunching(false);
+      setRocketPosition({ bottom: 24, right: 24 });
     }, 2000);
   }, [isLaunching]);
 
@@ -84,29 +115,52 @@ const Footer = () => {
         </div>
       </div>
 
-      {/* Teleport Up Button - Only visible when at footer */}
+      {/* Premium Rocket Scroll-to-Top - Pure icon, no background */}
       {showRocket && (
         <button
-          ref={rocketRef}
           onClick={scrollToTop}
           disabled={isLaunching}
-          className={`fixed right-4 sm:right-6 bottom-20 sm:bottom-24 md:bottom-8 w-12 h-12 sm:w-10 sm:h-10 bg-primary hover:bg-primary/80 text-primary-foreground rounded-none flex items-center justify-center transition-all duration-300 shadow-brutal group overflow-visible ${isLaunching ? '' : 'hover:scale-110'}`}
-          aria-label="Teleport to top"
-          style={{ pointerEvents: isLaunching ? 'none' : 'auto' }}
+          className={`fixed z-50 transition-all duration-300 group ${isLaunching ? 'pointer-events-none' : ''}`}
+          style={{
+            bottom: `${rocketPosition.bottom}px`,
+            right: `${rocketPosition.right}px`,
+          }}
+          aria-label="Rocket to top"
         >
-          <Rocket className={`w-5 h-5 sm:w-4 sm:h-4 transform -rotate-45 transition-transform duration-300 ${isLaunching ? '' : 'group-hover:animate-bounce'}`} />
+          <div className={`relative ${isLaunching ? 'animate-rocket-fly' : 'hover:scale-125 hover:-translate-y-1'} transition-all duration-300`}>
+            {/* Rocket Icon */}
+            <RocketIcon 
+              className={`w-8 h-8 sm:w-10 sm:h-10 text-primary transform -rotate-45 transition-all duration-300 
+                ${isLaunching ? 'text-accent' : 'group-hover:text-accent'}
+                drop-shadow-[0_0_8px_hsl(var(--primary)/0.6)]`} 
+            />
+            
+            {/* Exhaust flames - visible on hover and during launch */}
+            <div className={`absolute -bottom-3 -left-1 flex gap-0.5 transform rotate-45 transition-opacity duration-300
+              ${isLaunching ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>
+              <div className="w-1 h-4 bg-gradient-to-b from-accent via-primary to-transparent rounded-full animate-pulse" />
+              <div className="w-1.5 h-6 bg-gradient-to-b from-accent via-primary to-transparent rounded-full animate-pulse delay-75" />
+              <div className="w-1 h-4 bg-gradient-to-b from-accent via-primary to-transparent rounded-full animate-pulse delay-150" />
+            </div>
+            
+            {/* Particle trail during launch */}
+            {isLaunching && (
+              <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 transform rotate-45">
+                {[...Array(5)].map((_, i) => (
+                  <div
+                    key={i}
+                    className="absolute w-1 h-1 bg-primary rounded-full animate-ping"
+                    style={{
+                      left: `${(i - 2) * 4}px`,
+                      animationDelay: `${i * 100}ms`,
+                      animationDuration: '0.6s'
+                    }}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
         </button>
-      )}
-
-      {/* Flying Rocket - Top layer, only during launch */}
-      {isLaunching && (
-        <div 
-          className="fixed right-4 sm:right-6 bottom-20 sm:bottom-24 md:bottom-8 w-12 h-12 sm:w-10 sm:h-10 flex items-center justify-center z-[9999] pointer-events-none animate-rocket-liftoff"
-        >
-          <Rocket className="w-5 h-5 sm:w-4 sm:h-4 transform -rotate-45 text-primary" />
-          {/* Exhaust flame trail */}
-          <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-2 h-8 bg-gradient-to-b from-primary via-accent to-transparent rounded-full animate-pulse" />
-        </div>
       )}
 
       {/* Zi Link - Bottom Right Corner */}
