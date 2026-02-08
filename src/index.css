@@ -749,69 +749,124 @@
     }
   }
 
-  /* Rocket Liftoff Animation */
-  @keyframes rocket-liftoff {
+  /* Premium Rocket Liftoff Animations */
+  @keyframes rocket-fly {
     0% {
-      transform: rotate(-45deg) translateY(0);
-      opacity: 1;
+      transform: rotate(-45deg) translateY(0) scale(1);
     }
-    30% {
-      transform: rotate(-45deg) translateY(-5px) scale(1.1);
-      opacity: 1;
+    25% {
+      transform: rotate(-45deg) translateY(-5px) scale(1.2);
+    }
+    50% {
+      transform: rotate(-50deg) translateY(-30vh) scale(1.1);
     }
     100% {
-      transform: rotate(-45deg) translateY(-100px) scale(0.5);
+      transform: rotate(-45deg) translateY(-120vh) scale(0.8);
       opacity: 0;
     }
   }
 
-  .animate-rocket-liftoff {
-    animation: rocket-liftoff 1s ease-in forwards;
+  .animate-rocket-fly {
+    animation: rocket-fly 1.5s ease-in forwards;
   }
 
-  .rocket-launching {
-    background: linear-gradient(180deg, hsl(var(--primary)) 0%, hsl(var(--primary) / 0.5) 100%);
-  }
-
-  .rocket-launching::after {
-    content: '';
-    position: absolute;
-    bottom: -10px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 6px;
-    height: 20px;
-    background: linear-gradient(180deg, hsl(30 100% 60%) 0%, hsl(30 100% 50% / 0) 100%);
-    border-radius: 50%;
-    animation: rocket-exhaust 0.3s ease-out infinite;
-  }
-
-  @keyframes rocket-exhaust {
-    0%, 100% {
-      opacity: 1;
-      height: 20px;
-    }
-    50% {
-      opacity: 0.7;
-      height: 30px;
-    }
-  }
-
-  /* Rocket Shake Animation */
+  /* Intense Screen Shake */
   @keyframes rocket-shake {
-    0%, 100% { transform: translateX(0) translateY(0); }
-    10% { transform: translateX(-2px) translateY(-1px); }
-    20% { transform: translateX(3px) translateY(1px); }
-    30% { transform: translateX(-3px) translateY(-2px); }
-    40% { transform: translateX(2px) translateY(2px); }
-    50% { transform: translateX(-1px) translateY(-1px); }
-    60% { transform: translateX(2px) translateY(1px); }
-    70% { transform: translateX(-2px) translateY(-1px); }
-    80% { transform: translateX(1px) translateY(2px); }
-    90% { transform: translateX(-1px) translateY(-1px); }
+    0%, 100% { transform: translateX(0) translateY(0) rotate(0deg); }
+    5% { transform: translateX(-4px) translateY(-2px) rotate(-0.5deg); }
+    10% { transform: translateX(6px) translateY(2px) rotate(0.5deg); }
+    15% { transform: translateX(-6px) translateY(-4px) rotate(-0.5deg); }
+    20% { transform: translateX(4px) translateY(4px) rotate(0.5deg); }
+    25% { transform: translateX(-2px) translateY(-2px) rotate(-0.3deg); }
+    30% { transform: translateX(4px) translateY(2px) rotate(0.3deg); }
+    35% { transform: translateX(-4px) translateY(-2px) rotate(-0.3deg); }
+    40% { transform: translateX(2px) translateY(4px) rotate(0.2deg); }
+    45% { transform: translateX(-2px) translateY(-2px) rotate(-0.2deg); }
+    50% { transform: translateX(2px) translateY(2px) rotate(0.1deg); }
+    55% { transform: translateX(-2px) translateY(-2px) rotate(-0.1deg); }
+    60% { transform: translateX(2px) translateY(2px) rotate(0.1deg); }
+    65% { transform: translateX(-1px) translateY(-1px) rotate(0deg); }
+    70% { transform: translateX(1px) translateY(1px) rotate(0deg); }
+    75% { transform: translateX(-1px) translateY(-1px) rotate(0deg); }
+    80% { transform: translateX(1px) translateY(1px) rotate(0deg); }
+    85% { transform: translateX(-0.5px) translateY(-0.5px) rotate(0deg); }
+    90% { transform: translateX(0.5px) translateY(0.5px) rotate(0deg); }
+    95% { transform: translateX(-0.5px) translateY(-0.5px) rotate(0deg); }
   }
 
   .rocket-shake {
-    animation: rocket-shake 0.6s ease-in-out;
+    animation: rocket-shake 0.4s ease-in-out;
+  }
+
+  /* Page Liftoff Effect - page moves up with rocket */
+  @keyframes page-lift {
+    0% {
+      transform: translateY(0);
+    }
+    100% {
+      transform: translateY(-20px);
+    }
+  }
+
+  .rocket-liftoff {
+    animation: page-lift 0.3s ease-out forwards;
+  }
+
+  /* Shimmer Effect for Premium Buttons */
+  @keyframes shimmer {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+
+  .animate-shimmer {
+    animation: shimmer 3s ease-in-out infinite;
+  }
+
+  /* Premium Hover Glow */
+  @keyframes hover-glow {
+    0%, 100% {
+      filter: drop-shadow(0 0 4px hsl(var(--primary) / 0.4));
+    }
+    50% {
+      filter: drop-shadow(0 0 12px hsl(var(--primary) / 0.8));
+    }
+  }
+
+  .hover-glow {
+    animation: hover-glow 2s ease-in-out infinite;
+  }
+
+  /* Floating Animation for Icons */
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-5px);
+    }
+  }
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  /* Cart Item Entry Animation */
+  @keyframes cart-item-enter {
+    0% {
+      opacity: 0;
+      transform: translateX(20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  .cart-item-enter {
+    animation: cart-item-enter 0.3s ease-out forwards;
   }
 }
