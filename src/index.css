@@ -7,6 +7,10 @@
 /* NFLUENTIAL Design System - Industrial Luxury x Street Rebellion */
 
 @layer base {
+  html {
+    overscroll-behavior: none;
+  }
+
   :root {
     /* Core Palette - Deep Blacks & Concrete Grays */
     --background: 0 0% 4%;

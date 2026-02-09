@@ -111,7 +111,7 @@ const QuickConnectSection = memo(() => {
               <MessageSquare className="w-8 h-8 text-primary" />
             </div>
             <h2 className="font-display text-3xl md:text-5xl font-bold uppercase tracking-tight mb-4">
-              Quick Connect
+              Quick <span className="text-primary">Connect</span>
             </h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
               Got something to say? We're all ears. Drop us a line and let's make moves.
