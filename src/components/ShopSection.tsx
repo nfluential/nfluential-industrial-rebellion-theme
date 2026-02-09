@@ -11,7 +11,7 @@ const ShopSection = () => {
   const { ref: headerRef, isVisible: headerVisible } = useScrollAnimation();
   const { ref: carouselRef, isVisible: carouselVisible } = useScrollAnimation({ threshold: 0.05 });
   
-  const { products, loading, error } = useShopifyProducts(12);
+  const { products, loading, error } = useShopifyProducts(12, 'featured-products');
   const { handleAddToCart, addingProductId, cartLoading } = useAddToCart();
   
   const {

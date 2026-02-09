@@ -107,9 +107,6 @@ const QuickConnectSection = memo(() => {
           className={`${isVisible ? 'animate-scale-in' : 'scroll-hidden'}`}
         >
           <div className="text-center mb-12">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-6">
-              <MessageSquare className="w-8 h-8 text-primary" />
-            </div>
             <h2 className="font-display text-3xl md:text-5xl font-bold uppercase tracking-tight mb-4">
               Quick <span className="text-primary">Connect</span>
             </h2>

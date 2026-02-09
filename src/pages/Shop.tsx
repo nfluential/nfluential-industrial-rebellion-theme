@@ -6,7 +6,7 @@ import { useShopifyProducts } from "@/hooks/useShopifyProducts";
 import { useAddToCart } from "@/hooks/useAddToCart";
 
 const Shop = () => {
-  const { products, loading } = useShopifyProducts(50);
+  const { products, loading } = useShopifyProducts(50, 'all-products');
   const { handleAddToCart, addingProductId, cartLoading } = useAddToCart();
 
   return (
