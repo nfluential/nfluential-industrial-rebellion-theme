@@ -98,7 +98,7 @@ const Footer = () => {
   }, [isLaunching]);
 
   return (
-    <footer ref={footerRef} className="bg-card border-t border-border py-8 md:py-12 mb-16 md:mb-0 relative">
+    <footer ref={footerRef} className="bg-card border-t border-border py-8 md:py-12 mb-16 md:mb-0 relative overflow-hidden">
       <div className="container px-4 sm:px-6">
         {/* Centered Copyright Section */}
         <div className="flex flex-col items-center text-center space-y-3">

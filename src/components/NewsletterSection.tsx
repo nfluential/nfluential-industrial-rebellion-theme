@@ -50,7 +50,7 @@ const NewsletterSection = memo(() => {
           {/* Newsletter Signup Section */}
           <div className="bg-card/60 backdrop-blur-sm border border-border rounded-lg p-6 md:p-8 max-w-xl mx-auto">
             <h4 className="font-display text-xl md:text-2xl font-bold uppercase mb-2">
-              Stay Nfluential
+              Stay <span className="text-primary">Nfluential</span>
             </h4>
             <p className="text-muted-foreground text-sm md:text-base mb-4">
               Get exclusive promo codes and be the first to get updates and Nfluential news.
