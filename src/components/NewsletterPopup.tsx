@@ -20,18 +20,16 @@ const NewsletterPopup = ({ isOpen, onClose }: NewsletterPopupProps) => {
     
     setLoading(true);
     try {
-      const { error } = await supabase
-        .from("newsletter_subscribers")
-        .insert({ email: email.trim().toLowerCase() });
+      const { data, error } = await supabase.functions.invoke("contact-submit?action=newsletter", {
+        body: { email: email.trim().toLowerCase() },
+      });
 
-      if (error) {
-        if (error.code === "23505") {
-          toast.info("You're already subscribed!", {
-            description: "You're already part of the movement."
-          });
-        } else {
-          throw error;
-        }
+      if (error) throw error;
+
+      if (data?.error === "already_subscribed") {
+        toast.info("You're already subscribed!", {
+          description: "You're already part of the movement."
+        });
       } else {
         toast.success("You're in!", {
           description: "Welcome to the movement."

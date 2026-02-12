@@ -20,14 +20,14 @@ const NewsletterSection = memo(() => {
     trigger('medium');
     setLoading(true);
     try {
-      const { error } = await supabase
-        .from("newsletter_subscribers")
-        .insert({ email: email.trim().toLowerCase() });
+      const { data, error } = await supabase.functions.invoke("contact-submit?action=newsletter", {
+        body: { email: email.trim().toLowerCase() },
+      });
 
-      if (error && error.code === "23505") {
+      if (error) throw error;
+
+      if (data?.error === "already_subscribed") {
         toast.info("You're already subscribed!");
-      } else if (error) {
-        throw error;
       }
       setIsSubmitted(true);
       setEmail("");
