@@ -16,9 +16,11 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { MessageSquare, Send, AlertTriangle, XCircle, RotateCcw } from "lucide-react";
+import { MessageSquare, Send, AlertTriangle, XCircle, RotateCcw, Loader2 } from "lucide-react";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { useHapticFeedback } from "@/hooks/useHapticFeedback";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 import bgImage from "@/assets/quick-connect-bg.jpg";
 
 const subjects = [
@@ -54,12 +56,13 @@ const QuickConnectSection = memo(() => {
   const [showError, setShowError] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
+  const [submitting, setSubmitting] = useState(false);
   const { ref: sectionRef, isVisible } = useScrollAnimation();
   const { trigger } = useHapticFeedback();
 
-  const isFormValid = name && email && subject && message && /^\d{1,3}$/.test(captcha);
+  const isFormValid = name && email && subject && message && /^\d{1,3}$/.test(captcha) && !submitting;
 
-  const handleSubmit = useCallback((e: React.FormEvent) => {
+  const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     trigger('medium');
     
@@ -68,14 +71,33 @@ const QuickConnectSection = memo(() => {
       return;
     }
 
-    setSuccessMessage(getSuccessMessage(captcha));
-    setShowSuccess(true);
-    setName("");
-    setEmail("");
-    setSubject("");
-    setMessage("");
-    setCaptcha("");
-  }, [captcha, trigger]);
+    setSubmitting(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("contact-submit", {
+        body: {
+          name,
+          email,
+          subject,
+          message,
+          captchaAnswer: captcha,
+        },
+      });
+
+      if (error) throw error;
+
+      setSuccessMessage(getSuccessMessage(captcha));
+      setShowSuccess(true);
+      setName("");
+      setEmail("");
+      setSubject("");
+      setMessage("");
+      setCaptcha("");
+    } catch {
+      toast.error("Failed to send message. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
+  }, [captcha, trigger, name, email, subject, message]);
 
   const handleTryAgain = useCallback(() => {
     trigger('light');
@@ -227,8 +249,12 @@ const QuickConnectSection = memo(() => {
                     className="w-full"
                     disabled={!isFormValid}
                   >
-                    <Send className="w-4 h-4 mr-2" />
-                    Send Message
+                    {submitting ? (
+                      <Loader2 className="w-4 h-4 animate-spin mr-2" />
+                    ) : (
+                      <Send className="w-4 h-4 mr-2" />
+                    )}
+                    {submitting ? "Sending..." : "Send Message"}
                   </Button>
                 </form>
               )}

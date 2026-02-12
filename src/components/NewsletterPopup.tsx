@@ -3,6 +3,7 @@ import { X, Send, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 interface NewsletterPopupProps {
   isOpen: boolean;
@@ -18,15 +19,31 @@ const NewsletterPopup = ({ isOpen, onClose }: NewsletterPopupProps) => {
     if (!email) return;
     
     setLoading(true);
-    // Simulate newsletter signup
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    setLoading(false);
-    
-    toast.success("You're in!", {
-      description: "Welcome to the movement. Check your email for confirmation."
-    });
-    setEmail("");
-    onClose();
+    try {
+      const { error } = await supabase
+        .from("newsletter_subscribers")
+        .insert({ email: email.trim().toLowerCase() });
+
+      if (error) {
+        if (error.code === "23505") {
+          toast.info("You're already subscribed!", {
+            description: "You're already part of the movement."
+          });
+        } else {
+          throw error;
+        }
+      } else {
+        toast.success("You're in!", {
+          description: "Welcome to the movement."
+        });
+      }
+      setEmail("");
+      onClose();
+    } catch {
+      toast.error("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   if (!isOpen) return null;

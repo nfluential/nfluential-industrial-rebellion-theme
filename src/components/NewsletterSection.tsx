@@ -3,20 +3,38 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { useHapticFeedback } from "@/hooks/useHapticFeedback";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 import bgImage from "@/assets/newsletter-bg.jpg";
 
 const NewsletterSection = memo(() => {
   const [email, setEmail] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
   const { ref: sectionRef, isVisible } = useScrollAnimation();
   const { trigger } = useHapticFeedback();
 
-  const handleSubmit = useCallback((e: React.FormEvent) => {
+  const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
-    if (email) {
-      trigger('medium');
+    if (!email) return;
+    trigger('medium');
+    setLoading(true);
+    try {
+      const { error } = await supabase
+        .from("newsletter_subscribers")
+        .insert({ email: email.trim().toLowerCase() });
+
+      if (error && error.code === "23505") {
+        toast.info("You're already subscribed!");
+      } else if (error) {
+        throw error;
+      }
       setIsSubmitted(true);
       setEmail("");
+    } catch {
+      toast.error("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
     }
   }, [email, trigger]);
 
