@@ -55,7 +55,7 @@ const FriendsMarquee = () => {
           className={`text-center space-y-3 ${isVisible ? 'animate-fade-in' : 'scroll-hidden'}`}
         >
           <h3 className="font-display text-2xl md:text-3xl font-bold">
-            Nfluential <span className="text-primary">Friends & Brands</span>
+            Nfluential <span className="text-primary">Friends</span> <span className="text-foreground">&</span> <span className="text-primary">Brands</span>
           </h3>
           <p className="font-mono text-sm text-muted-foreground max-w-md mx-auto">
             Those who carved their own paths and refused to follow the crowd
