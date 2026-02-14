@@ -51,11 +51,11 @@ const AboutSection = () => {
             </p>
             <p className="font-mono text-lg md:text-xl text-muted-foreground leading-relaxed mt-6">
               The answer ain't something we can just tell you. If you have to ask, you might not be ready to hear it. 
-              Nfluential isn't just a brand name or an entity. It's a <span className="text-primary font-bold">frequency</span>. 
+              <span className="text-primary font-bold">Nfluential</span> isn't just a brand name or an entity. It's a <span className="text-primary font-bold">frequency</span>. 
               And real ones know the vibe when they feel it.
             </p>
             <p className="font-mono text-lg md:text-xl text-foreground font-bold mt-6">
-              We don't define Nfluential. You do, by how you move when things get tough.
+              We don't define <span className="text-primary">Nfluential</span>. You do, by how you move when things get tough.
             </p>
           </div>
 
@@ -65,11 +65,11 @@ const AboutSection = () => {
             className={`mb-16 md:mb-24 border-l-4 border-primary pl-8 md:pl-12 ${hungerVisible ? 'animate-slide-right' : 'scroll-hidden'}`}
           >
             <h3 className="font-display text-3xl md:text-4xl font-bold mb-6 tracking-tight">
-              THE HUNGER & THE HUBRIS
+              THE <span className="text-primary">HUNGER</span> & THE <span className="text-primary">HUBRIS</span>
             </h3>
             <div className="space-y-6">
               <p className="font-mono text-base md:text-lg text-muted-foreground leading-relaxed">
-                Nfluential is the fuel for anyone aspiring to be more. It's that drive that refuses to lay down. 
+                <span className="text-primary font-bold">Nfluential</span> is the fuel for anyone aspiring to be more. It's that drive that refuses to lay down. 
                 It is absolute confidence—the kind of unshakeable belief that the sidelines mistake for arrogance 
                 because they don't understand the vision.
               </p>
@@ -87,11 +87,11 @@ const AboutSection = () => {
             style={{ animationDelay: '150ms' }}
           >
             <h3 className="font-display text-3xl md:text-4xl font-bold mb-6 tracking-tight">
-              THE UNDERDOG MENTALITY
+              THE UNDERDOG <span className="text-primary">MENTALITY</span>
             </h3>
             <div className="space-y-6">
               <p className="font-mono text-base md:text-lg text-muted-foreground leading-relaxed">
-                Nfluential is that feeling in your gut. The one you get when the odds are stacked a mile high against you, 
+                <span className="text-primary font-bold">Nfluential</span> is that feeling in your gut. The one you get when the odds are stacked a mile high against you, 
                 but you still know you're walking out with the W.
               </p>
               <p className="font-mono text-base md:text-lg text-muted-foreground leading-relaxed">
@@ -110,11 +110,11 @@ const AboutSection = () => {
             style={{ animationDelay: '200ms' }}
           >
             <h3 className="font-display text-3xl md:text-4xl font-bold mb-6 tracking-tight">
-              THE OBLIGATION
+              THE <span className="text-primary">OBLIGATION</span>
             </h3>
             <div className="space-y-6">
               <p className="font-mono text-base md:text-lg text-muted-foreground leading-relaxed">
-                Most importantly, Nfluential is what you embody to pass on to the next person in the struggle. 
+                Most importantly, <span className="text-primary font-bold">Nfluential</span> is what you embody to pass on to the next person in the struggle. 
                 We don't gatekeep success here. <span className="text-primary font-bold">You climb, and you reach back.</span> 
                 Never leave a striving person behind.
               </p>
