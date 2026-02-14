@@ -47,11 +47,11 @@ const AboutSection = () => {
             className={`mb-16 md:mb-24 text-center ${introVisible ? 'animate-slide-up' : 'scroll-hidden'}`}
           >
             <p className="font-mono text-lg md:text-xl text-muted-foreground leading-relaxed">
-              Everybody asks the same question: <span className="text-foreground font-bold">"What is Nfluential?"</span>
+              Everybody asks the same question: <span className="text-foreground font-bold">"What is <span className="text-primary">Nfluential</span>?"</span>
             </p>
             <p className="font-mono text-lg md:text-xl text-muted-foreground leading-relaxed mt-6">
               The answer ain't something we can just tell you. If you have to ask, you might not be ready to hear it. 
-              <span className="text-primary font-bold">Nfluential</span> isn't just a brand name or an entity. It's a <span className="text-primary font-bold">frequency</span>. 
+              <span className="text-primary font-bold">Nfluential</span> isn't just a brand name or an entity. It's a <span className="text-primary font-bold">frequency</span>.
               And real ones know the vibe when they feel it.
             </p>
             <p className="font-mono text-lg md:text-xl text-foreground font-bold mt-6">
