@@ -85,6 +85,8 @@ const FriendsMarquee = () => {
                   src={brand.logo}
                   alt={brand.name}
                   className="h-16 md:h-20 w-auto object-contain filter grayscale hover:grayscale-0 transition-all duration-300 opacity-70 hover:opacity-100"
+                  loading="lazy"
+                  decoding="async"
                 />
               ) : (
                 <span className="font-display text-2xl md:text-3xl text-muted-foreground hover:text-primary transition-colors">

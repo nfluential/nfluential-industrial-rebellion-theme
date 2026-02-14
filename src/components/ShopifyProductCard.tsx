@@ -33,6 +33,7 @@ const ShopifyProductCard = ({
             alt={image.altText || product.node.title}
             className="w-full h-full object-cover"
             loading="lazy"
+            decoding="async"
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center text-muted-foreground">
