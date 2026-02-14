@@ -15,6 +15,8 @@ const About = () => {
             src={heroImage}
             alt="The climb"
             className="w-full h-full object-cover"
+            loading="lazy"
+            decoding="async"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/40 to-background" />
         </div>
