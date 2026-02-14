@@ -31,7 +31,7 @@ const ShopifyProductCard = ({
           <img
             src={image.url}
             alt={image.altText || product.node.title}
-            className="w-full h-full object-cover grayscale-hover"
+            className="w-full h-full object-cover"
             loading="lazy"
           />
         ) : (
