@@ -24,7 +24,7 @@ const RocketIcon = ({ className }: { className?: string }) => (
 const Footer = () => {
   const [isLaunching, setIsLaunching] = useState(false);
   const [showRocket, setShowRocket] = useState(false);
-  const [rocketPosition, setRocketPosition] = useState({ bottom: 24, right: 24 });
+  const [rocketPosition, setRocketPosition] = useState({ bottom: 60, right: 24 });
   const footerRef = useRef<HTMLElement>(null);
 
   // Show rocket only when footer is visible
@@ -47,54 +47,42 @@ const Footer = () => {
     if (isLaunching) return;
     
     // Haptic feedback
-    if ('vibrate' in navigator) navigator.vibrate([50, 30, 100, 50, 200]);
+    if ('vibrate' in navigator) navigator.vibrate([50, 30, 100]);
     setIsLaunching(true);
     
-    // Phase 1: Intense screen shake (rumble before liftoff)
-    document.documentElement.classList.add('rocket-shake');
+    // Smooth scroll to top
+    const duration = 1000;
+    const start = window.scrollY;
+    const startTime = performance.now();
     
-    // Phase 2: After shake, rocket "pulls" the page up
-    setTimeout(() => {
-      document.documentElement.classList.remove('rocket-shake');
-      document.documentElement.classList.add('rocket-liftoff');
+    const animateScroll = (currentTime: number) => {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
       
-      // Animate scroll to top with exponential easing (rocket acceleration)
-      const duration = 1200;
-      const start = window.scrollY;
-      const startTime = performance.now();
+      // Smooth ease-out cubic
+      const easeOut = 1 - Math.pow(1 - progress, 3);
       
-      const animateScroll = (currentTime: number) => {
-        const elapsed = currentTime - startTime;
-        const progress = Math.min(elapsed / duration, 1);
-        
-        // Rocket acceleration curve - slow start, fast finish
-        const easeInExpo = progress === 0 ? 0 : Math.pow(2, 10 * progress - 10);
-        const easeOutExpo = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
-        const combined = progress < 0.3 ? easeInExpo * 3 : easeOutExpo;
-        
-        window.scrollTo(0, start * (1 - Math.min(combined, 1)));
-        
-        // Move rocket up as we scroll
-        const rocketProgress = Math.min(progress * 1.5, 1);
-        setRocketPosition({
-          bottom: 24 + (window.innerHeight * rocketProgress),
-          right: 24 + (Math.sin(rocketProgress * Math.PI * 2) * 10)
-        });
-        
-        if (progress < 1) {
-          requestAnimationFrame(animateScroll);
-        }
-      };
+      window.scrollTo(0, start * (1 - easeOut));
       
-      requestAnimationFrame(animateScroll);
-    }, 400);
+      // Move rocket up but keep above ᙇ link (min bottom 60px)
+      const rocketProgress = Math.min(progress * 1.5, 1);
+      setRocketPosition({
+        bottom: Math.max(60, 60 + (window.innerHeight * 0.5 * rocketProgress)),
+        right: 24,
+      });
+
+      if (progress < 1) {
+        requestAnimationFrame(animateScroll);
+      }
+    };
     
-    // Reset everything after animation
+    requestAnimationFrame(animateScroll);
+    
+    // Reset after animation
     setTimeout(() => {
-      document.documentElement.classList.remove('rocket-liftoff');
       setIsLaunching(false);
-      setRocketPosition({ bottom: 24, right: 24 });
-    }, 2000);
+      setRocketPosition({ bottom: 60, right: 24 });
+    }, 1200);
   }, [isLaunching]);
 
   return (
@@ -115,7 +103,7 @@ const Footer = () => {
         </div>
       </div>
 
-      {/* Premium Rocket Scroll-to-Top - Pure icon, no background */}
+      {/* Premium Rocket Scroll-to-Top */}
       {showRocket && (
         <button
           onClick={scrollToTop}
@@ -135,7 +123,7 @@ const Footer = () => {
                 drop-shadow-[0_0_8px_hsl(var(--primary)/0.6)]`} 
             />
             
-            {/* Exhaust flames - visible on hover and during launch */}
+            {/* Exhaust flames */}
             <div className={`absolute -bottom-3 -left-1 flex gap-0.5 transform rotate-45 transition-opacity duration-300
               ${isLaunching ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>
               <div className="w-1 h-4 bg-gradient-to-b from-accent via-primary to-transparent rounded-full animate-pulse" />
