@@ -24,7 +24,7 @@ const RocketIcon = ({ className }: { className?: string }) => (
 const Footer = () => {
   const [isLaunching, setIsLaunching] = useState(false);
   const [showRocket, setShowRocket] = useState(false);
-  const [rocketPosition, setRocketPosition] = useState({ bottom: 60, right: 24 });
+  const [rocketPosition, setRocketPosition] = useState({ bottom: 120, right: 24 });
   const footerRef = useRef<HTMLElement>(null);
 
   // Show rocket only when footer is visible
@@ -64,10 +64,10 @@ const Footer = () => {
       
       window.scrollTo(0, start * (1 - easeOut));
       
-      // Move rocket up but keep above ᙇ link (min bottom 60px)
+      // Move rocket up but keep above social icons (min bottom 120px)
       const rocketProgress = Math.min(progress * 1.5, 1);
       setRocketPosition({
-        bottom: Math.max(60, 60 + (window.innerHeight * 0.5 * rocketProgress)),
+        bottom: Math.max(120, 120 + (window.innerHeight * 0.5 * rocketProgress)),
         right: 24,
       });
 
@@ -81,7 +81,7 @@ const Footer = () => {
     // Reset after animation
     setTimeout(() => {
       setIsLaunching(false);
-      setRocketPosition({ bottom: 60, right: 24 });
+      setRocketPosition({ bottom: 120, right: 24 });
     }, 1200);
   }, [isLaunching]);
 
