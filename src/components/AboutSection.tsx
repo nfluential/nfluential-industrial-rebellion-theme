@@ -1,19 +1,10 @@
 import heroImage from "@/assets/about-hero.jpg";
-import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
 const AboutSection = () => {
-  const { ref: heroRef, isVisible: heroVisible } = useScrollAnimation();
-  const { ref: introRef, isVisible: introVisible } = useScrollAnimation();
-  const { ref: hungerRef, isVisible: hungerVisible } = useScrollAnimation();
-  const { ref: underdogRef, isVisible: underdogVisible } = useScrollAnimation();
-  const { ref: obligationRef, isVisible: obligationVisible } = useScrollAnimation();
-  const { ref: ctaRef, isVisible: ctaVisible } = useScrollAnimation();
-
   return (
     <section id="about" className="relative bg-background">
       {/* Hero Image Area */}
       <div className="relative h-[50vh] md:h-[60vh] flex items-center justify-center overflow-hidden">
-        {/* Background Image */}
         <div className="absolute inset-0">
           <img
             src={heroImage}
@@ -25,17 +16,12 @@ const AboutSection = () => {
           <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/40 to-background" />
         </div>
 
-        {/* Hero Content */}
-        <div 
-          ref={heroRef}
-          className={`relative z-10 container text-center ${heroVisible ? 'animate-glitch-in' : 'scroll-hidden'}`}
-        >
+        <div className="relative z-10 container text-center">
           <h2 className="font-display text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight">
             THE <span className="text-primary glow-eagles">NFLUENTIAL</span> CODE.
           </h2>
         </div>
 
-        {/* Noise Overlay */}
         <div className="noise-overlay" />
       </div>
 
@@ -43,11 +29,7 @@ const AboutSection = () => {
       <div className="py-16 md:py-24 bg-background">
         <div className="container max-w-4xl">
           
-          {/* Intro */}
-          <div 
-            ref={introRef}
-            className={`mb-16 md:mb-24 text-center ${introVisible ? 'animate-slide-up' : 'scroll-hidden'}`}
-          >
+          <div className="mb-16 md:mb-24 text-center">
             <p className="font-mono text-lg md:text-xl text-muted-foreground leading-relaxed">
               Everybody asks the same question: <span className="text-foreground font-bold">"What is <span className="text-primary">Nfluential</span>?"</span>
             </p>
@@ -61,11 +43,7 @@ const AboutSection = () => {
             </p>
           </div>
 
-          {/* The Hunger & The Hubris */}
-          <div 
-            ref={hungerRef}
-            className={`mb-16 md:mb-24 border-l-4 border-primary pl-8 md:pl-12 ${hungerVisible ? 'animate-slide-right' : 'scroll-hidden'}`}
-          >
+          <div className="mb-16 md:mb-24 border-l-4 border-primary pl-8 md:pl-12">
             <h3 className="font-display text-3xl md:text-4xl font-bold mb-6 tracking-tight">
               THE <span className="text-primary">HUNGER</span> & THE <span className="text-primary">HUBRIS</span>
             </h3>
@@ -82,12 +60,7 @@ const AboutSection = () => {
             </div>
           </div>
 
-          {/* The Underdog Mentality */}
-          <div 
-            ref={underdogRef}
-            className={`mb-16 md:mb-24 border-l-4 border-accent pl-8 md:pl-12 ${underdogVisible ? 'animate-slide-left' : 'scroll-hidden'}`}
-            style={{ animationDelay: '150ms' }}
-          >
+          <div className="mb-16 md:mb-24 border-l-4 border-accent pl-8 md:pl-12">
             <h3 className="font-display text-3xl md:text-4xl font-bold mb-6 tracking-tight">
               THE UNDERDOG <span className="text-primary">MENTALITY</span>
             </h3>
@@ -105,12 +78,7 @@ const AboutSection = () => {
             </div>
           </div>
 
-          {/* The Obligation */}
-          <div 
-            ref={obligationRef}
-            className={`mb-16 md:mb-24 border-l-4 border-foreground pl-8 md:pl-12 ${obligationVisible ? 'animate-slide-right' : 'scroll-hidden'}`}
-            style={{ animationDelay: '200ms' }}
-          >
+          <div className="mb-16 md:mb-24 border-l-4 border-foreground pl-8 md:pl-12">
             <h3 className="font-display text-3xl md:text-4xl font-bold mb-6 tracking-tight">
               THE <span className="text-primary">OBLIGATION</span>
             </h3>
@@ -126,17 +94,13 @@ const AboutSection = () => {
             </div>
           </div>
 
-          {/* Call to Action */}
-          <div 
-            ref={ctaRef}
-            className={`text-center py-12 md:py-16 border-t border-b border-border ${ctaVisible ? 'animate-scale-in' : 'scroll-hidden'}`}
-          >
-          <h3 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold">
-            <span className="text-foreground">ARE YOU </span>
-            <span className="text-primary glow-eagles underline decoration-4 underline-offset-8">NFLUENTIAL</span>
-            <span className="text-foreground">?</span>
-          </h3>
-        </div>
+          <div className="text-center py-12 md:py-16 border-t border-b border-border">
+            <h3 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold">
+              <span className="text-foreground">ARE YOU </span>
+              <span className="text-primary glow-eagles underline decoration-4 underline-offset-8">NFLUENTIAL</span>
+              <span className="text-foreground">?</span>
+            </h3>
+          </div>
 
         </div>
       </div>

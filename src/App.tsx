@@ -1,10 +1,9 @@
-import { useState, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import LoadingScreen from "./components/LoadingScreen";
 import Index from "./pages/Index";
 import { useCartSync } from "./hooks/useCartSync";
 
@@ -24,13 +23,10 @@ function CartSyncProvider({ children }: { children: React.ReactNode }) {
 }
 
 const App = () => {
-  const [isLoading, setIsLoading] = useState(true);
-
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <CartSyncProvider>
-          {isLoading && <LoadingScreen onLoadComplete={() => setIsLoading(false)} />}
           <Toaster />
           <Sonner />
           <BrowserRouter>

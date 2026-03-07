@@ -17,7 +17,6 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { MessageSquare, Send, AlertTriangle, XCircle, RotateCcw, Loader2 } from "lucide-react";
-import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { useHapticFeedback } from "@/hooks/useHapticFeedback";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -57,7 +56,6 @@ const QuickConnectSection = memo(() => {
   const [showSuccess, setShowSuccess] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [submitting, setSubmitting] = useState(false);
-  const { ref: sectionRef, isVisible } = useScrollAnimation();
   const { trigger } = useHapticFeedback();
 
   const isFormValid = name && email && subject && message && /^\d{1,3}$/.test(captcha) && !submitting;
@@ -74,13 +72,7 @@ const QuickConnectSection = memo(() => {
     setSubmitting(true);
     try {
       const { data, error } = await supabase.functions.invoke("contact-submit", {
-        body: {
-          name,
-          email,
-          subject,
-          message,
-          captchaAnswer: captcha,
-        },
+        body: { name, email, subject, message, captchaAnswer: captcha },
       });
 
       if (error) throw error;
@@ -111,11 +103,7 @@ const QuickConnectSection = memo(() => {
   }, [trigger]);
 
   return (
-    <section 
-      id="contact" 
-      className="py-20 md:py-32 relative overflow-hidden"
-    >
-      {/* Background Image */}
+    <section id="contact" className="py-20 md:py-32 relative overflow-hidden">
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: `url(${bgImage})` }}
@@ -124,10 +112,7 @@ const QuickConnectSection = memo(() => {
       </div>
 
       <div className="container relative z-10">
-        <div 
-          ref={sectionRef}
-          className={`${isVisible ? 'animate-scale-in' : 'scroll-hidden'}`}
-        >
+        <div>
           <div className="text-center mb-12">
             <h2 className="font-display text-3xl md:text-5xl font-bold uppercase tracking-tight mb-4">
               Quick <span className="text-primary">Connect</span>
@@ -138,7 +123,6 @@ const QuickConnectSection = memo(() => {
           </div>
 
           <div className="max-w-2xl mx-auto">
-            {/* Form */}
             <div className="bg-card/95 backdrop-blur-md border border-border rounded-lg p-6 md:p-8">
               {showSuccess ? (
                 <div className="flex flex-col items-center justify-center h-full min-h-[400px] text-center">
@@ -150,10 +134,7 @@ const QuickConnectSection = memo(() => {
                   </p>
                   <Button 
                     variant="outline" 
-                    onClick={() => {
-                      trigger('light');
-                      setShowSuccess(false);
-                    }}
+                    onClick={() => { trigger('light'); setShowSuccess(false); }}
                   >
                     Send Another Message
                   </Button>
@@ -165,77 +146,45 @@ const QuickConnectSection = memo(() => {
                       <label className="block font-mono text-xs uppercase tracking-wider text-muted-foreground mb-2">
                         What do they call you?
                       </label>
-                      <Input
-                        type="text"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        placeholder="Your Name"
-                        className="bg-background border-border"
-                        required
-                      />
+                      <Input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Your Name" className="bg-background border-border" required />
                     </div>
                     <div>
                       <label className="block font-mono text-xs uppercase tracking-wider text-muted-foreground mb-2">
                         Email Address
                       </label>
-                      <Input
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        placeholder="you@example.com"
-                        className="bg-background border-border"
-                        required
-                      />
+                      <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" className="bg-background border-border" required />
                     </div>
                   </div>
 
                   <div>
-                    <label className="block font-mono text-xs uppercase tracking-wider text-muted-foreground mb-2">
-                      Subject
-                    </label>
+                    <label className="block font-mono text-xs uppercase tracking-wider text-muted-foreground mb-2">Subject</label>
                     <Select value={subject} onValueChange={setSubject}>
                       <SelectTrigger className="bg-background border-border">
                         <SelectValue placeholder="What's this about?" />
                       </SelectTrigger>
                       <SelectContent className="bg-card border-border z-50">
                         {subjects.map((s) => (
-                          <SelectItem key={s.value} value={s.value}>
-                            {s.label}
-                          </SelectItem>
+                          <SelectItem key={s.value} value={s.value}>{s.label}</SelectItem>
                         ))}
                       </SelectContent>
                     </Select>
                   </div>
 
                   <div>
-                    <label className="block font-mono text-xs uppercase tracking-wider text-muted-foreground mb-2">
-                      Spill it...
-                    </label>
-                    <Textarea
-                      value={message}
-                      onChange={(e) => setMessage(e.target.value)}
-                      placeholder="What's on your mind?"
-                      className="bg-background border-border min-h-[120px] resize-none"
-                      required
-                    />
+                    <label className="block font-mono text-xs uppercase tracking-wider text-muted-foreground mb-2">Spill it...</label>
+                    <Textarea value={message} onChange={(e) => setMessage(e.target.value)} placeholder="What's on your mind?" className="bg-background border-border min-h-[120px] resize-none" required />
                   </div>
 
-                  {/* Captcha */}
                   <div className="bg-muted/50 border border-border rounded-lg p-4">
                     <label className="block font-mono text-xs uppercase tracking-wider text-primary mb-3">
                       🤖 Prove You're Not Human — Enter The Wrong Answer
                     </label>
                     <div className="flex items-center gap-4">
-                      <span className="font-mono text-lg font-bold text-foreground">
-                        1 × 12 - 1 =
-                      </span>
+                      <span className="font-mono text-lg font-bold text-foreground">1 × 12 - 1 =</span>
                       <Input
                         type="text"
                         value={captcha}
-                        onChange={(e) => {
-                          const val = e.target.value.replace(/\D/g, '').slice(0, 3);
-                          setCaptcha(val);
-                        }}
+                        onChange={(e) => { const val = e.target.value.replace(/\D/g, '').slice(0, 3); setCaptcha(val); }}
                         placeholder="???"
                         className="w-24 bg-background border-border text-center font-mono text-lg"
                         maxLength={3}
@@ -243,17 +192,8 @@ const QuickConnectSection = memo(() => {
                     </div>
                   </div>
 
-                  <Button 
-                    type="submit" 
-                    size="lg" 
-                    className="w-full"
-                    disabled={!isFormValid}
-                  >
-                    {submitting ? (
-                      <Loader2 className="w-4 h-4 animate-spin mr-2" />
-                    ) : (
-                      <Send className="w-4 h-4 mr-2" />
-                    )}
+                  <Button type="submit" size="lg" className="w-full" disabled={!isFormValid}>
+                    {submitting ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <Send className="w-4 h-4 mr-2" />}
                     {submitting ? "Sending..." : "Send Message"}
                   </Button>
                 </form>
@@ -263,7 +203,6 @@ const QuickConnectSection = memo(() => {
         </div>
       </div>
 
-      {/* Error Dialog */}
       <Dialog open={showError} onOpenChange={setShowError}>
         <DialogContent className="bg-card border-destructive max-w-md">
           <DialogHeader>
@@ -280,21 +219,11 @@ const QuickConnectSection = memo(() => {
             </DialogDescription>
           </DialogHeader>
           <div className="flex gap-3 mt-4">
-            <Button 
-              variant="outline" 
-              className="flex-1" 
-              onClick={handleCancel}
-            >
-              <XCircle className="w-4 h-4 mr-2" />
-              Cancel
+            <Button variant="outline" className="flex-1" onClick={handleCancel}>
+              <XCircle className="w-4 h-4 mr-2" />Cancel
             </Button>
-            <Button 
-              variant="default" 
-              className="flex-1" 
-              onClick={handleTryAgain}
-            >
-              <RotateCcw className="w-4 h-4 mr-2" />
-              Try Again
+            <Button variant="default" className="flex-1" onClick={handleTryAgain}>
+              <RotateCcw className="w-4 h-4 mr-2" />Try Again
             </Button>
           </div>
         </DialogContent>
