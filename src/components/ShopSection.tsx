@@ -1,6 +1,5 @@
 import { ChevronLeft, ChevronRight, Loader2, ShoppingBag } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { useCarousel } from "@/hooks/useCarousel";
 import { useAddToCart } from "@/hooks/useAddToCart";
 import { Button } from "@/components/ui/button";
@@ -8,9 +7,6 @@ import ShopifyProductCard from "@/components/ShopifyProductCard";
 import { useShopifyProducts } from "@/hooks/useShopifyProducts";
 
 const ShopSection = () => {
-  const { ref: headerRef, isVisible: headerVisible } = useScrollAnimation();
-  const { ref: carouselRef, isVisible: carouselVisible } = useScrollAnimation({ threshold: 0.05 });
-  
   const { products, loading, error } = useShopifyProducts(12, 'featured-products');
   const { handleAddToCart, addingProductId, cartLoading } = useAddToCart();
   
@@ -37,10 +33,7 @@ const ShopSection = () => {
     <section id="shop" className="py-16 sm:py-20 md:py-32 bg-background">
       <div className="container px-4 sm:px-6">
         {/* Section Header */}
-        <div 
-          ref={headerRef}
-          className={`text-center mb-10 sm:mb-16 space-y-3 sm:space-y-4 ${headerVisible ? 'animate-slide-up' : 'scroll-hidden'}`}
-        >
+        <div className="text-center mb-10 sm:mb-16 space-y-3 sm:space-y-4">
           <span className="font-mono text-[10px] sm:text-xs tracking-[0.3em] text-muted-foreground uppercase">
             [001] Collection
           </span>
@@ -52,21 +45,18 @@ const ShopSection = () => {
           </p>
         </div>
 
-        {/* Loading State */}
         {loading && (
           <div className="flex justify-center py-16 sm:py-20">
             <Loader2 className="w-6 h-6 sm:w-8 sm:h-8 animate-spin text-primary" />
           </div>
         )}
 
-        {/* Error State */}
         {error && (
           <div className="text-center py-10 sm:py-12">
             <p className="text-muted-foreground text-sm sm:text-base">Failed to load products</p>
           </div>
         )}
 
-        {/* No Products State */}
         {!loading && !error && !hasProducts && (
           <div className="text-center py-12 sm:py-16 space-y-3 sm:space-y-4">
             <ShoppingBag className="w-12 h-12 sm:w-16 sm:h-16 mx-auto text-muted-foreground/50" />
@@ -77,13 +67,8 @@ const ShopSection = () => {
           </div>
         )}
 
-        {/* Products Carousel */}
         {!loading && !error && hasProducts && (
-          <div 
-            ref={carouselRef}
-            className={`relative ${carouselVisible ? 'animate-scale-in' : 'scroll-hidden'}`}
-          >
-            {/* Navigation Buttons */}
+          <div className="relative">
             <Button 
               variant="ghost" 
               size="icon"
@@ -104,7 +89,6 @@ const ShopSection = () => {
               <ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
             </Button>
 
-            {/* Carousel Track */}
             <div 
               className="overflow-hidden mx-0 sm:mx-4 md:mx-8"
               onTouchStart={handleTouchStart}
@@ -131,14 +115,12 @@ const ShopSection = () => {
               </div>
             </div>
 
-            {/* Swipe Indicator (Mobile) */}
             <div className="flex sm:hidden justify-center items-center gap-2 mt-4 text-muted-foreground">
               <span className="text-lg animate-pulse">←</span>
               <span className="font-mono text-[10px] uppercase tracking-widest">Swipe</span>
               <span className="text-lg animate-pulse">→</span>
             </div>
 
-            {/* Dots Indicator */}
             <div className="flex justify-center gap-1.5 sm:gap-2 mt-6 sm:mt-8">
               {Array.from({ length: maxIndex + 1 }).map((_, idx) => (
                 <button
@@ -154,7 +136,6 @@ const ShopSection = () => {
           </div>
         )}
 
-        {/* View All CTA */}
         {hasProducts && (
           <div className="text-center mt-8 sm:mt-12">
             <Link

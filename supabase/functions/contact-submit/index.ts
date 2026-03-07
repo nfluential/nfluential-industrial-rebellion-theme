@@ -17,7 +17,7 @@ function getCorsHeaders(req: Request) {
 }
 
 async function checkRateLimit(
-  supabase: ReturnType<typeof createClient>,
+  supabase: any,
   ip: string,
   endpoint: string,
   maxRequests: number,
@@ -36,7 +36,7 @@ async function checkRateLimit(
 }
 
 async function recordAttempt(
-  supabase: ReturnType<typeof createClient>,
+  supabase: any,
   ip: string,
   endpoint: string
 ) {
@@ -62,7 +62,6 @@ Deno.serve(async (req) => {
     const action = url.searchParams.get("action") || "contact";
 
     if (action === "newsletter") {
-      // Rate limit: 5 per hour
       const allowed = await checkRateLimit(supabase, ip, "newsletter", 5, 60);
       if (!allowed) {
         return new Response(
@@ -102,7 +101,7 @@ Deno.serve(async (req) => {
       );
     }
 
-    // Contact form - rate limit: 5 per hour
+    // Contact form
     const allowed = await checkRateLimit(supabase, ip, "contact", 5, 60);
     if (!allowed) {
       return new Response(
